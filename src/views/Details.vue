@@ -21,7 +21,7 @@
         <el-form-item v-if="ruleForm.value == 1" style='display:none'></el-form-item>
         <el-form-item v-else-if="ruleForm.value == 2" style='display:none'></el-form-item>
         <el-form-item v-else-if="ruleForm.value == 3" label="交易ID" prop="txId">
-          <el-input v-model="ruleForm.txId" placeholder="请输入接收者账户"></el-input>
+          <el-input v-model="ruleForm.txId" placeholder="请输入交易ID"></el-input>
         </el-form-item>
 
         <!-- 接受者账户判断 -->
@@ -70,35 +70,33 @@
         </el-row>
       </el-dialog>
       <el-dialog
-        title="交易信息"
-        :visible.sync="ordersVisible" width="100%">
-
+        :visible.sync="ordersVisible" width="95%">
         <div class="order">
           <h3>交易信息</h3>
           <br>
           <el-row :gutter="10">
-            <el-col :span="8"><div class="grid-content bg-purple" style='text-align:right'><b>藏品ID：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.id}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>藏品ID：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.id}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple" style='text-align:right'><b>交易ID：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.txID}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>交易ID：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.txID}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple" style='text-align:right'><b>from：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.from}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>from(evm)：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.from}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple" style='text-align:right'><b>to：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.to}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>to(evm)：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.to}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple" style='text-align:right'><b>交易时间：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.timestamp/1000 | formatDate}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>交易时间：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.timestamp/1000 | formatDate}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple"  style='text-align:right'><b>数量：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.amount}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"  style='text-align:right'><b>数量：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.amount}}</div></el-col>
           </el-row>
         </div>
         <br>
@@ -106,20 +104,20 @@
           <h3>藏品信息</h3>
           <br>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple"  style='text-align:right'><b>藏品名：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{nftDetail.name}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"  style='text-align:right'><b>藏品名：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{nftDetail.name}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple"  style='text-align:right'><b>藏品预览：</b></div></el-col>
-            <el-col :span="16">
+            <el-col :span="6"><div class="grid-content bg-purple"  style='text-align:right'><b>藏品预览：</b></div></el-col>
+            <el-col :span="18">
               <div class="grid-content bg-purple" style='text-align:left'>
                 <el-image style='width:30px;height:30px' :src='nftDetail.link' :preview-src-list="srcList"></el-image>
               </div>
               </el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="8"><div class="grid-content bg-purple"  style='text-align:right'><b>藏品哈希：</b></div></el-col>
-            <el-col :span="16"><div class="grid-content bg-purple" style='text-align:left'>{{nftDetail.hash}}</div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"  style='text-align:right'><b>藏品哈希：</b></div></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{nftDetail.hash}}</div></el-col>
           </el-row>
         </div>
       </el-dialog>
@@ -443,7 +441,8 @@ export default {
 </script>
 <style scoped>
 .details{
-  width: 300px;
+  width: 400px;
+  min-height: 500px;
   margin: auto;
 }
 .details .header{
@@ -469,5 +468,12 @@ export default {
 <style>
   .details .write .el-form--label-top .el-form-item__label{
     padding: 0;
+  }
+  .el-dialog__header{
+    padding: 0;
+  }
+  .el-dialog{
+    margin: 0 auto 0;
+    margin-top: 10vh !important;
   }
 </style>

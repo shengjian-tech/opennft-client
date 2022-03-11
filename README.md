@@ -18,9 +18,9 @@
 
 国内加速下载 https://gitee.com/shengjian-tech/opennft-client/raw/master/MakerONE.zip
 
-1，浏览器选择管理拓展程序
+1，浏览器选择管理扩展程序
 
-![拓展程序](./md/%E6%8B%93%E5%B1%95%E7%A8%8B%E5%BA%8F.png)
+![扩展程序](./md/%E6%8B%93%E5%B1%95%E7%A8%8B%E5%BA%8F.png)
 
 2，首先打开开发者模式，然后解压下载的压缩包并选择加载，此时您可以看到浏览器已经安装好该插件了
 
@@ -28,7 +28,7 @@
 
 3，您可以选择插件常驻
 
-![拓展常驻](./md/%E5%B8%B8%E9%A9%BB.jpg)
+![扩展常驻](./md/%E5%B8%B8%E9%A9%BB.jpg)
 
 ### 插件登录
 

@@ -129,7 +129,7 @@ export default {
 </script>
 <style scoped>
 .home{
-  width: 300px;
+  width: 400px;
   margin: auto;
 }
 .home .header{

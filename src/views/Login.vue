@@ -101,7 +101,7 @@ export default {
 </script>
 <style scoped>
 .login{
-  width: 300px;
+  width: 400px;
   margin: auto;
 }
 .login .header{
