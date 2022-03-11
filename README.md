@@ -15,6 +15,7 @@
 # 插件安装
 
 插件已放置根目录下(![点击下载](./MakerONE.zip))
+
 国内加速下载 https://gitee.com/shengjian-tech/opennft-client/raw/master/MakerONE.zip
 
 1，浏览器选择管理拓展程序
