@@ -8,7 +8,7 @@
 
 ### 充值百度开放网络
 
-> ##### `Tip:用户地址下需要有百度开放网络余额才能使用转移资产，查询余额等功能。建议在百度开放网络充值0.1元。充值链接：`https://xuper.baidu.com/n/console#/finance/wallet/recharge
+`Tip:用户地址下需要有百度开放网络余额才能使用转移资产，查询余额等功能。建议在百度开放网络充值0.1元。充值链接：`https://xuper.baidu.com/n/console#/finance/wallet/recharge
 
 ![充值](./md/%E5%85%85%E5%80%BC.png)
 
@@ -56,7 +56,7 @@
 
 ![查询交易](./md/%E6%9F%A5%E8%AF%A2%E4%BA%A4%E6%98%93.jpg)
 
-# 整体设计流程：
+# 整体设计：
 
 ## 登录页
 
