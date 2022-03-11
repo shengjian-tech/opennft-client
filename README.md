@@ -1,68 +1,58 @@
-# MakerONE
-
-## Project setup
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-# OpenNFT 钱包插件
+# OpenNFT 浏览器插件
 
 ## 使用说明
 
 ### 注册百度账号以及获取私钥
 
-![注册](./md/注册.png)
+![注册](./md/%E6%B3%A8%E5%86%8C.png)
 
 ### 充值百度开放网络
 
 > ##### `Tip:用户地址下需要有百度开放网络余额才能使用转移资产，查询余额等功能。建议在百度开放网络充值0.1元。充值链接：`https://xuper.baidu.com/n/console#/finance/wallet/recharge
 
-![充值](./md/充值.png)
+![充值](./md/%E5%85%85%E5%80%BC.png)
+
+# 插件安装
+
+插件已放置根目录下(![点击下载](./MakerONE.zip))
+
+1，浏览器选择管理拓展程序
+
+![拓展程序](./md/%E6%8B%93%E5%B1%95%E7%A8%8B%E5%BA%8F.png)
+
+2，首先打开开发者模式，然后解压下载的压缩包并选择加载，此时您可以看到浏览器已经安装好该插件了
+
+![加载程序](./md/%E5%8A%A0%E8%BD%BD%E7%A8%8B%E5%BA%8F.jpg)
+
+3，您可以选择插件常驻
+
+![拓展常驻](./md/%E5%B8%B8%E9%A9%BB.jpg)
 
 ### 插件登录
 
 > ##### 下载私钥到本地之后，打开浏览器插件进入登录页，选择本地私钥，输入安全码登录：
 
-![登录页](./md/登录页.jpg)
+![登录页](./md/%E7%99%BB%E5%BD%95%E9%A1%B5.jpg)
 
 ### 用户首页
 
 > 登录之后跳转到首页，显示目前处于百度开放网络，用户百度开放网络地址，余额。以及功能等。
 
-![首页](C:\Users\Admin\Desktop\OpenNFT钱包插件\首页.jpg)
+![首页](./md/%E9%A6%96%E9%A1%B5.jpg)
 
 ### 功能
 
 #### 查询资产余额：
 
-![查询余额](./md/查询余额.jpg)
+![查询余额](./md/%E6%9F%A5%E8%AF%A2%E4%BD%99%E9%A2%9D.jpg)
 
 #### 转移资产：
 
-![转移资产](./md/转移资产.jpg)
+![转移资产](./md/%E8%BD%AC%E7%A7%BB%E8%B5%84%E4%BA%A7.jpg)
 
 #### 查询交易：
 
-![查询交易](./md/查询交易.jpg)
+![查询交易](./md/%E6%9F%A5%E8%AF%A2%E4%BA%A4%E6%98%93.jpg)
 
 ## 整体设计流程：
 
