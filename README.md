@@ -1,4 +1,4 @@
-# OpenNFT 浏览器插件
+# OpenNFT 浏览器插件(谷歌浏览器或 Chromium 内核)
 
 ## 前期准备
 
