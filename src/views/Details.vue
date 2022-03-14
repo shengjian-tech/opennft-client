@@ -127,7 +127,7 @@
 
 <script>
 import XuperSDK,{ Endorsement } from '@xuperchain/xuper-sdk';
-import { XchainAddrToEvm } from '../assets/js/index'
+import { XchainAddrToEvm,EvmToXchainAddr } from '../assets/js/index'
 import Clipboard from 'clipboard'
 export default {
   name: 'Details',
@@ -355,13 +355,14 @@ export default {
               // 交易ID
               var txID = Buffer.from(demo.tx.txid, "base64").toString('hex');
               var txReqJson = JSON.parse(Buffer.from(demo.tx.contract_requests[1].args.input, 'base64').toString());
+              
               var from = ''
               var to = ''
               var tokenID = ''
               var amount = ''
               if (demo.tx.contract_requests[1].method_name == 'safeTransferFrom') {
-                  from = txReqJson.from
-                  to = txReqJson.to
+                  from = EvmToXchainAddr(txReqJson.from)
+                  to = EvmToXchainAddr(txReqJson.to)
                   tokenID = txReqJson.id
                   amount = txReqJson.amount
               } else {

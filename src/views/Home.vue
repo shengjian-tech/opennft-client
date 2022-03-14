@@ -1,5 +1,15 @@
 <template>
   <div class="home">
+    <div class="help">
+      
+      <el-popover
+        placement="bottom"
+        width="100"
+        trigger="click">
+          <img width="100%" src="../assets/makerOneChat.jpg" alt="">
+          <el-button type="text" slot="reference">帮助</el-button>
+      </el-popover>
+    </div>
     <div class="header">
       <img src="../assets/avatar.png" alt="">
       <h3>开放网络</h3>
@@ -132,11 +142,17 @@ export default {
   width: 400px;
   margin: auto;
 }
+.home .help{
+  width: 80%;
+  margin: auto;
+  text-align: right;
+  padding-top: 20px;
+}
 .home .header{
   width: 80%;
   height: 100px;
   margin: auto;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 .home .header h3{
   color: #008BD7;

@@ -14,6 +14,10 @@
 
 ## 插件使用
 
+使用帮助二维码
+
+![扩展程序](./md/makerOneChat.jpg)
+
 ### 插件安装
 
 插件已放置根目录下(![点击下载](./MakerONE.zip))
@@ -69,12 +73,10 @@
 
 ```js
 import base58 from 'bs58'
-
+import { sha256 } from 'js-sha256'
 export function XchainAddrToEvm(addr) {
   var result = ''
   try {
-    //    var addr;
-    //    var addrType;
     // 判断是否是合约账号;判断合约账户地址仅支持 XC11111111111@xuper, xuper后缀，go-sdk有相同问题。
     if (determineContractAccount(addr)) {
       result = contractAccountToEVMAddress(addr)
@@ -182,6 +184,62 @@ function xchainAKToEVMAddress(xchainAddr) {
   }
   rawAddr = rawAddr.slice(1, 21)
   return Buffer.from(rawAddr, '').toString('hex').toUpperCase()
+}
+
+export function EvmToXchainAddr(addr) {
+  // return addr, addrType, nil
+  var result = ''
+  try {
+    var bs = Buffer.from(addr, 'hex').toString('ascii')
+    if (bs.length != Word160Length) {
+      throw new Error('slice passed as address shou have 20 byte length')
+    }
+    var evmAddrStrWithPrefix = bs
+    // 合约账号
+    if (evmAddrStrWithPrefix.slice(0, 4) == contractAccountPrefixs) {
+      result = evmAddressToContractAccount(bs)
+    } else if (evmAddrStrWithPrefix.slice(0, 4) == contractNamePrefixs) {
+      result = evmAddressToContractName(bs)
+    } else {
+      var buffer = Buffer.from(addr, 'hex')
+      result = evmAddressToXchain(buffer)
+    }
+    return result
+  } catch (err) {
+    console.log(err)
+  }
+}
+function evmAddressToContractAccount(addr) {
+  return accountPrefix + addr.slice(4) + '@xuper'
+}
+function evmAddressToContractName(addr) {
+  var index = addr.lastIndexOf(evmAddressFiller)
+  return addr.slice(index + 1)
+}
+
+function evmAddressToXchain(addr) {
+  var addTyepe = []
+  var addrArray = new Uint8Array(addr)
+  addTyepe.push(1)
+  for (var i = 0; i < addrArray.length; i++) {
+    addTyepe.push(addrArray[i])
+  }
+  var checkCode = DoubleSha256(addTyepe)
+  var simpleCheckCode = checkCode.slice(0, 4)
+  for (var i = 0; i < simpleCheckCode.length; i++) {
+    addTyepe.push(simpleCheckCode[i])
+  }
+  return base58.encode(addTyepe)
+}
+
+// DoubleSha256 执行2次SHA256，这是为了防止SHA256算法被攻破。
+function DoubleSha256(data) {
+  return UsingSha256(UsingSha256(data))
+}
+
+// UsingSha256 get the hash result of data using SHA256
+function UsingSha256(data) {
+  return sha256.array(data)
 }
 ```
 
@@ -374,8 +432,8 @@ const acc = xsdk.import(password, private)
       var tokenID = ''
       var amount = ''
       if (demo.tx.contract_requests[1].method_name == 'safeTransferFrom') {
-        from = txReqJson.from
-        to = txReqJson.to
+        from = EvmToXchainAddr(txReqJson.from)
+        to = EvmToXchainAddr(txReqJson.to)
         tokenID = txReqJson.id
         amount = txReqJson.amount
       } else {
