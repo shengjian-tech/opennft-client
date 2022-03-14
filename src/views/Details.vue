@@ -83,11 +83,11 @@
             <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.txID}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>from(evm)：</b></div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>from：</b></div></el-col>
             <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.from}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
-            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>to(evm)：</b></div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple" style='text-align:right'><b>to：</b></div></el-col>
             <el-col :span="18"><div class="grid-content bg-purple" style='text-align:left'>{{txDetail.to}}</div></el-col>
           </el-row>
           <el-row :gutter="10" style="margin-top:5px">
