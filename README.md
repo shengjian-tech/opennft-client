@@ -16,7 +16,7 @@
 
 使用帮助二维码
 
-![扩展程序](./md/makerOneChat.jpg)
+![使用帮助](./md/makerOneChat.jpg)
 
 ### 插件安装
 
