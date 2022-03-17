@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="help">
-      
+      <el-button type="text" style='float:left;font-size:14px;color:#409EFF'>版本号：0.0.2</el-button>
       <el-popover
         placement="bottom"
         width="100"
