@@ -13,7 +13,9 @@
     <div class="header">
       <img src="../assets/avatar.png" alt="">
       <h3>开放网络</h3>
+      <el-button type="text" @click="addNet">添加网络</el-button>
     </div>
+    <br />
     <div class="balance">
       <el-row>
         <el-col :span='6'>
@@ -54,19 +56,19 @@
     <div class="tab">
       <el-row>
         <el-col :span="8">
-          <div class="grid-content bg-purple" style='cursor:pointer' @click="getDetails(1)">
+          <div class="grid-content bg-purple" style='cursor:pointer' @click="getDetails('转移资产')">
             <p><i class="el-icon-coin"></i></p>
             <p style='font-size:14px'>转移资产</p>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple-light" style='cursor:pointer' @click="getDetails(2)">
+          <div class="grid-content bg-purple-light" style='cursor:pointer' @click="getDetails('查询NFT余额')">
             <p><i class="el-icon-view"></i></p>
             <p style='font-size:14px'>查询NFT余额</p>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple" style='cursor:pointer' @click="getDetails(3)">
+          <div class="grid-content bg-purple" style='cursor:pointer' @click="getDetails('查询交易')">
             <p><i class="el-icon-soccer"></i></p>
             <p style='font-size:14px'>查询交易</p>
           </div>
@@ -92,6 +94,10 @@ export default {
     this.balance()
   },
    methods:{
+    //添加网络
+    addNet(){
+      console.log(111)
+    },
     getDetails(index){
       if(this.balanceMoney === 0 ){
         this.$message.warning('请您至少充值0.1元即可正常体验插件功能')

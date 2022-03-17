@@ -76,10 +76,14 @@ export default {
                   makeTransaction: params
               })
         ]
-      });
+        });
         const acc = xsdk.import(this.password, this.key);
-        localStorage.setItem('acc',JSON.stringify(acc))
-        this.$router.push('/Home')
+        if(acc){
+          localStorage.setItem('acc',JSON.stringify(acc))
+          this.$router.push('/Home')
+        }else{
+          this.$$message.warning('请检查私钥和安全码')
+        }      
       }
     },
     clickLoad() {
