@@ -227,7 +227,7 @@ export default {
         });
         const moveAssets = async (toAddr,TokenID,Amount) => {
           try {
-            const contractName = 'opennft';
+            const contractName = 'Test_ERC9';
             const methodName = 'safeTransferFrom';
             const from = XchainAddrToEvm(JSON.parse(localStorage.getItem("acc")).address);
             const acc = JSON.parse(localStorage.getItem("acc"))
@@ -248,6 +248,12 @@ export default {
             if(xsdk.transactionIdToHex(demo.transaction.txid)){
               this.txId = xsdk.transactionIdToHex(demo.transaction.txid)
               this.dialogVisible = true
+              this.$axios({
+                method:'get',
+                url:`https://makerone.shengjian.net/nft/api/nft/userassets/synchronizedTransaction?txId=${xsdk.transactionIdToHex(demo.transaction.txid)}`,
+              }).then((response) =>{
+                  console.log(response)       //请求成功返回的数据
+              })
             }
             const result = xsdk.postTransaction(demo.transaction, acc);
             console.log(result)
