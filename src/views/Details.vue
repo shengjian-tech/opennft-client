@@ -227,7 +227,7 @@ export default {
         });
         const moveAssets = async (toAddr,TokenID,Amount) => {
           try {
-            const contractName = 'Test_ERC9';
+            const contractName = 'opennft';
             const methodName = 'safeTransferFrom';
             const from = XchainAddrToEvm(JSON.parse(localStorage.getItem("acc")).address);
             const acc = JSON.parse(localStorage.getItem("acc"))
