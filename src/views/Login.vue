@@ -1,5 +1,15 @@
 <template>
   <div class="login">
+    <div class="help">
+      <el-button type="text" style='float:left;font-size:14px;color:#409EFF'>版本号：0.0.2</el-button>
+      <el-popover
+        placement="bottom"
+        width="100"
+        trigger="click">
+          <img width="100%" src="../assets/makerOneChat.jpg" alt="">
+          <el-button type="text" slot="reference">帮助</el-button>
+      </el-popover>
+    </div>
     <div class="header"><img src="../assets/logo.png" alt=""></div>
     <div class="write">
       <el-row :gutter='10'>
@@ -103,6 +113,12 @@ export default {
 .login{
   width: 400px;
   margin: auto;
+}
+.login .help{
+  width: 80%;
+  margin: auto;
+  text-align: right;
+  padding-top: 20px;
 }
 .login .header{
   color: brown;
