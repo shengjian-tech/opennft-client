@@ -502,53 +502,56 @@ const acc = xsdk.import(password, private)
   }
   ```
 
-- 用户新增 action 操作。不用再首页展示，只在第三张图的下拉框显示即可。用户新增功能需要传入参数较多（TODO）
+- 新增自定义操作
 
-  ```js
-  // 下述，所有参数可设置默认值。用户新增功能。
+用户点击详情页新增，即可添加自定义操作，填写参数后新增到本地，并调用通用方法进行查询或其交易。下方为通用方法
 
-  // 需要传入参数
-  const commonFunc = async (type,contractName, methodName,args) => {
-    try {
-      const acc = JSON.parse(localStorage.getItem("acc"))
-      const demo = await xsdk.invokeSolidityContarct(
-          contractName,
-          methodName,
-          'evm',
-          args,
-          '0',
-          acc);
-        if (type == "query") {
-          this.$notify({
-            title: '查询成功',
-            dangerouslyUseHTMLString: true,
-            message: `<p style='word-wrap:break-word;word-break:break-all'>${JSON.stringify(demo.preExecutionTransaction.response.responses)}</p>`,
-            type: 'success',
+```js
+ // 下述，所有参数可设置默认值。用户新增功能。
 
-          });
-        } else {
-          this.$notify({
-            title: '查询成功',
-            dangerouslyUseHTMLString: true,
-            message: `<p style='word-wrap:break-word'>${JSON.stringify(xsdk.postTransaction(demo.transaction, acc))}</p>`,
-            type: 'success',
-            duration: 0
-          });
-        }
-    } catch (err) {
-      if(err){
-        this.$message.error('执行失败')
-      }else{
-        this.$message.success('执行成功')
-      }
-    }
-  }
-  ...
-  ```
+ // 需要传入参数
+ const commonFunc = async (type,contractName, methodName,args) => {
+   try {
+     const acc = JSON.parse(localStorage.getItem("acc"))
+     const demo = await xsdk.invokeSolidityContarct(
+         contractName,
+         methodName,
+         'evm',
+         args,
+         '0',
+         acc);
+       if (type == "query") {
+         this.$notify({
+           title: '查询成功',
+           dangerouslyUseHTMLString: true,
+           message: `<p style='word-wrap:break-word;word-break:break-all'>${JSON.stringify(demo.preExecutionTransaction.response.responses)}</p>`,
+           type: 'success',
+
+         });
+       } else {
+         this.$notify({
+           title: '查询成功',
+           dangerouslyUseHTMLString: true,
+           message: `<p style='word-wrap:break-word'>${JSON.stringify(xsdk.postTransaction(demo.transaction, acc))}</p>`,
+           type: 'success',
+           duration: 0
+         });
+       }
+   } catch (err) {
+     if(err){
+       this.$message.error('执行失败')
+     }else{
+       this.$message.success('执行成功')
+     }
+   }
+ }
+ ...
+
+```
 
 - 新增网络功能
 
-首页点击新增网络，本地添加网络并可自由切换。
+首页点击新增网络，本地添加网络并可自由切换，并查询对应数据。
 
 - 切换账号功能用户点击头像，可以新增账户，即新增一个 acc 对象，切换账户，即切换 acc 对象。新增账户也需要指定私钥，安全码(非必须)。（TODO）
 
