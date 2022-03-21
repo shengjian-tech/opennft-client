@@ -60,6 +60,17 @@
 
 ![查询交易](./md/%E6%9F%A5%E8%AF%A2%E4%BA%A4%E6%98%93.jpg)
 
+### 新增网络：
+
+![新增网络](./md/addNet.jpg)
+![新增网络](./md/netList.jpg)
+
+### 新增自定义操作：
+
+![新增自定义操作](./md/add.jpg)
+
+![新增自定义操作](./md/addList.jpg)
+
 # 整体设计：
 
 ## 登录页
@@ -494,17 +505,50 @@ const acc = xsdk.import(password, private)
 - 用户新增 action 操作。不用再首页展示，只在第三张图的下拉框显示即可。用户新增功能需要传入参数较多（TODO）
 
   ```js
-  // 下述，所有参数可设置默认值。用户新增功能时，用户可以设置是否用户输入。，前端不显示，不设置即前端需要输入。
+  // 下述，所有参数可设置默认值。用户新增功能。
 
   // 需要传入参数
-  const contractName = '合约名'
-  const method = '方法名'
+  const commonFunc = async (type,contractName, methodName,args) => {
+    try {
+      const acc = JSON.parse(localStorage.getItem("acc"))
+      const demo = await xsdk.invokeSolidityContarct(
+          contractName,
+          methodName,
+          'evm',
+          args,
+          '0',
+          acc);
+        if (type == "query") {
+          this.$notify({
+            title: '查询成功',
+            dangerouslyUseHTMLString: true,
+            message: `<p style='word-wrap:break-word;word-break:break-all'>${JSON.stringify(demo.preExecutionTransaction.response.responses)}</p>`,
+            type: 'success',
 
-  // 调用方法的参数。（前端可选多个）
-  const from ='';
-  const to = '';
+          });
+        } else {
+          this.$notify({
+            title: '查询成功',
+            dangerouslyUseHTMLString: true,
+            message: `<p style='word-wrap:break-word'>${JSON.stringify(xsdk.postTransaction(demo.transaction, acc))}</p>`,
+            type: 'success',
+            duration: 0
+          });
+        }
+    } catch (err) {
+      if(err){
+        this.$message.error('执行失败')
+      }else{
+        this.$message.success('执行成功')
+      }
+    }
+  }
   ...
   ```
+
+- 新增网络功能
+
+首页点击新增网络，本地添加网络并可自由切换。
 
 - 切换账号功能用户点击头像，可以新增账户，即新增一个 acc 对象，切换账户，即切换 acc 对象。新增账户也需要指定私钥，安全码(非必须)。（TODO）
 

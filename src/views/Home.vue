@@ -12,8 +12,22 @@
     </div>
     <div class="header">
       <img src="../assets/avatar.png" alt="">
-      <h3>开放网络</h3>
-      <el-button type="text" @click="addNet">添加网络</el-button>
+      <br><br>     
+      <el-row>
+        <el-col :span="18">
+          <el-select @change='getSelect' style='width:100%' v-model="value">
+            <el-option
+              v-for="(item,index) in options"
+              :key="index"
+              :label="item.netName"
+              :value="item.netName">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <el-button style='float:right' type="text" @click="dialogVisible=true">添加网络</el-button>
+        </el-col>
+      </el-row>
     </div>
     <br />
     <div class="balance">
@@ -75,6 +89,25 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="90%">
+        <el-form style='text-align:left' label-position="top" :rules='rules' :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="网络名称" prop="netName">
+            <el-input v-model="ruleForm.netName" placeholder="请输入网络名称"></el-input>
+          </el-form-item>
+          <el-form-item label="网络节点" prop="node">
+            <el-input v-model="ruleForm.node" placeholder="请输入网络节点"></el-input>
+          </el-form-item>
+          <el-form-item label="链名" prop="chain">
+            <el-input v-model="ruleForm.chain" placeholder="请输入链名"></el-input>
+          </el-form-item>
+        </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size='small' @click="dialogVisible = false">取 消</el-button>
+        <el-button size='small' type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -85,19 +118,91 @@ export default {
     return {
       address:JSON.parse(localStorage.getItem("acc")).address,
       balanceMoney:0,
+      dialogVisible:false,
+      ruleForm:{
+        netName:'',
+        node:'',
+        chain:'',
+      },
+      node:'',
+      chain:'',
+      value:'开放网络',
+      rules: {
+        netName: [
+          { required: true, message: '网络名称不能为空', trigger: 'blur' },
+        ],
+        node:[
+          { required: true, message: '网络节点不能为空', trigger: 'blur' },
+        ],
+        chain:[
+          { required: true, message: '链名不能为空', trigger: 'blur' },
+        ],
+      },
+      options:[
+        {netName:'开放网络',node:'https://xuper.baidu.com/nodeapi',chain:'xuper'}
+      ]
     }
   },
   components: {
     
   },
   created(){
-    this.balance()
+    if(localStorage.getItem('netList')){
+      var arr = JSON.parse(localStorage.getItem('netList')).netList
+      this.options = this.options.concat(arr)
+      this.options.forEach(item => {
+        if(this.value == item.netName){
+          this.node = item.node
+          this.chain = item.chain
+          this.balance()
+        }
+      });  
+    }else{
+      this.options.forEach(item => {
+        if(this.value == item.netName){
+          this.node = item.node
+          this.chain = item.chain
+          this.balance()
+        }
+      });
+    }
   },
    methods:{
-    //添加网络
-    addNet(){
-      console.log(111)
+     //判断数据
+    getSelect(value){
+      this.options.forEach(item => {
+        if(value == item.netName){
+          this.node = item.node
+          this.chain = item.chain
+          this.balance()
+        }
+      });
+      
     },
+     //添加网络
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var netArr = {
+              netList:[]
+            }
+            if(localStorage.getItem('netList')){
+              netArr.netList = JSON.parse(localStorage.getItem('netList')).netList
+              netArr.netList.push(this.ruleForm)
+              localStorage.setItem('netList',JSON.stringify(netArr))
+            }else{
+              netArr.netList.push(this.ruleForm)
+              localStorage.setItem('netList',JSON.stringify(netArr))
+            }
+            this.dialogVisible = false
+            window.location.reload()
+        } else {
+          return false;
+        }
+      });
+    },
+
+    //查询余额
     getDetails(index){
       if(this.balanceMoney === 0 ){
         this.$message.warning('请您至少充值0.1元即可正常体验插件功能')
@@ -106,28 +211,29 @@ export default {
       }
     },
     async balance(){
-      const node = 'https://xuper.baidu.com/nodeapi';
-      const chain = 'xuper';
+      const node = this.node;
+      const chain = this.chain;
       const params = {
       server: "https://xuper.baidu.com/nodeapi", // ip, port
       fee: "400", // fee
       endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
       endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT" // fee address
       }
-      var xsdk = XuperSDK.getInstance({
-          node,
-          chain,
-          env:{
-            node:{
-                disableGRPC: true
-            }
-          },
-          plugins: [
+      let nodeStatus = null
+      if(node === "https://xuper.baidu.com/nodeapi"){
+        nodeStatus = [
               Endorsement({
                   transfer: params,
                   makeTransaction: params
               })
-          ],         
+          ]
+      }else{
+        nodeStatus = null
+      }
+      const xsdk = new XuperSDK({
+          node,
+          chain,
+          plugins: nodeStatus         
       });
       const getBalance = async(address) => {
         // eslint-disable-next-line no-useless-catch
@@ -155,13 +261,10 @@ export default {
   padding-top: 20px;
 }
 .home .header{
-  width: 80%;
+  width: 90%;
   height: 100px;
   margin: auto;
   padding-top: 30px;
-}
-.home .header h3{
-  color: #008BD7;
 }
 .home .balance{
   width:90%;
@@ -181,4 +284,9 @@ export default {
   color: #008BD7;
   font-size: 24px;
 }
+</style>
+<style>
+  .el-dialog__header{
+    padding: 0;
+  }
 </style>

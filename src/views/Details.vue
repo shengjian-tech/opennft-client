@@ -143,7 +143,7 @@
               </el-col>
               <el-col :span="4">
                 <i @click.prevent="removeDomain(item)" 
-                    style='font-size:24px;margin-top:25%;cursor: pointer;' 
+                    style='font-size:24px;margin-top:35%;cursor: pointer;' 
                     class="el-icon-remove-outline"></i>
               </el-col>
             </el-row>
@@ -338,6 +338,7 @@ export default {
               localStorage.setItem('addForm',JSON.stringify(localArr))
             }
             this.visible = false
+            window.location.reload()
           } else {
             return false;
           }
@@ -616,9 +617,21 @@ export default {
                   '0', 
                   acc);
                 if (type == "query") {
-                  console.log(JSON.stringify(demo.preExecutionTransaction.response.responses))
+                  this.$notify({
+                    title: '查询成功',
+                    dangerouslyUseHTMLString: true,
+                    message: `<p style='word-wrap:break-word;word-break:break-all'>${JSON.stringify(demo.preExecutionTransaction.response.responses)}</p>`,
+                    type: 'success',
+                    
+                  });
                 } else {
-                  console.log(xsdk.postTransaction(demo.transaction, acc))
+                  this.$notify({
+                    title: '查询成功',
+                    dangerouslyUseHTMLString: true,
+                    message: `<p style='word-wrap:break-word'>${JSON.stringify(xsdk.postTransaction(demo.transaction, acc))}</p>`,
+                    type: 'success',
+                    duration: 0
+                  });
                 }
             } catch (err) {
               if(err){
