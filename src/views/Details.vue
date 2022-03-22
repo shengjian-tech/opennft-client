@@ -29,9 +29,9 @@
         <!-- 表单提交方法判断 -->
         <el-form-item>
           <div style='text-align:center'>
-            <el-button v-if="ruleForm.value == '转移资产'" style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="TransferNFTEvm('ruleForm')">执行</el-button>
-            <el-button v-else-if="ruleForm.value == '查询NFT余额'" style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="findAssets('ruleForm')">执行</el-button>
-            <el-button v-else-if="ruleForm.value == '查询交易'" style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="findOrder('ruleForm')">执行</el-button>
+            <el-button v-if="value == '转移资产'" style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="TransferNFTEvm('ruleForm')">执行</el-button>
+            <el-button v-else-if="value == '查询NFT余额'" style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="findAssets('ruleForm')">执行</el-button>
+            <el-button v-else-if="value == '查询交易'" style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="findOrder('ruleForm')">执行</el-button>
             <el-button v-else style='width:80%;background-color:#008BD7;border:none' type="primary" round @click="publicMethod('ruleForm')">执行</el-button>
           </div>
         </el-form-item>
