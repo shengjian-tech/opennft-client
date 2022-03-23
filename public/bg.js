@@ -18,6 +18,7 @@ chrome.runtime.onMessage.addListener((res) => {
         type: "popup",
         width: 460,
         height: 700,
+        top: 80,
       });
     } else if (data.message == "OpenNFT_demand") {
       //查询NFT余额
@@ -26,6 +27,7 @@ chrome.runtime.onMessage.addListener((res) => {
         type: "popup",
         width: 460,
         height: 700,
+        top: 80,
       });
     }
   }
