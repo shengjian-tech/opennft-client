@@ -1,7 +1,4 @@
-var s = document.createElement("SCRIPT");
-s.src = chrome.runtime.getURL("../js/oth.js");
-document.querySelector("html").appendChild(s);
-
+//监听window消息，并发送给插件bg.js
 window.addEventListener(
   "message",
   function (event) {

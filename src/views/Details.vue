@@ -414,6 +414,7 @@ export default {
           formValue: [{ value: "txId", label: "交易ID" }],
         },
       ],
+      detailData: this.$route.query.detail,
     };
   },
   filters: {
@@ -459,8 +460,9 @@ export default {
         }
       });
     }
-    //创建监听方法，监听通信
-    this.getListener();
+    if (this.detailData) {
+      this.ruleForm = JSON.parse(this.detailData);
+    }
   },
   methods: {
     //添加参数
@@ -859,8 +861,6 @@ export default {
         console.log(err);
       }
     },
-    //监听方法
-    getListener() {},
   },
 };
 </script>
