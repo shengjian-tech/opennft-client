@@ -1,63 +1,77 @@
 <template>
   <div class="home">
     <div class="help">
-      <el-button type="text" style='float:left;font-size:14px;color:#409EFF'>版本号：0.0.2</el-button>
-      <el-popover
-        placement="bottom"
-        width="100"
-        trigger="click">
-          <img width="100%" src="../assets/makerOneChat.jpg" alt="">
-          <el-button type="text" slot="reference">帮助</el-button>
+      <el-button
+        type="text"
+        style="float: left; font-size: 14px; color: #409eff"
+        >版本号：0.0.2</el-button
+      >
+      <el-popover placement="bottom" width="100" trigger="click">
+        <img width="100%" src="../assets/makerOneChat.jpg" alt="" />
+        <el-button type="text" slot="reference">帮助</el-button>
       </el-popover>
     </div>
     <div class="header">
-      <img src="../assets/avatar.png" alt="">
-      <br><br>     
+      <img src="../assets/avatar.png" alt="" />
+      <br /><br />
       <el-row>
         <el-col :span="18">
-          <el-select @change='getSelect' style='width:100%' v-model="value">
+          <el-select @change="getSelect" style="width: 100%" v-model="value">
             <el-option
-              v-for="(item,index) in options"
+              v-for="(item, index) in options"
               :key="index"
               :label="item.netName"
-              :value="item.netName">
+              :value="item.netName"
+            >
             </el-option>
           </el-select>
         </el-col>
         <el-col :span="6">
-          <el-button style='float:right' type="text" @click="dialogVisible=true">添加网络</el-button>
+          <el-button
+            style="float: right"
+            type="text"
+            @click="dialogVisible = true"
+            >添加网络</el-button
+          >
         </el-col>
       </el-row>
     </div>
     <br />
     <div class="balance">
       <el-row>
-        <el-col :span='6'>
+        <el-col :span="6">
           <div class="grid-content bg-purple">
-            <h4 style='text-align:right;'>Address：</h4>
+            <h4 style="text-align: right">Address：</h4>
           </div>
         </el-col>
-        <el-col :span='18'>
+        <el-col :span="18">
           <div class="grid-content bg-purple">
-            <p style='padding:0 20px 0 20px;word-wrap:break-word;'>{{address}}</p>
+            <p style="padding: 0 20px 0 20px; word-wrap: break-word">
+              {{ address }}
+            </p>
           </div>
         </el-col>
       </el-row>
-      <br>
+      <br />
       <el-row>
-        <el-col :span='6'>
+        <el-col :span="6">
           <div class="grid-content bg-purple">
-            <h4 style='text-align:right;'>余额：</h4>
+            <h4 style="text-align: right">余额：</h4>
           </div>
         </el-col>
-        <el-col :span='18'>
+        <el-col :span="18">
           <div class="grid-content bg-purple">
-            <p style='padding:0 20px 0 20px;word-wrap:break-word;'>￥{{balanceMoney}}&nbsp;
-              <i @click="balance" style='font-weight:700;color:#008BD7;cursor: pointer;' class="el-icon-refresh-left" ></i>
-              <a 
+            <p style="padding: 0 20px 0 20px; word-wrap: break-word">
+              ￥{{ balanceMoney }}&nbsp;
+              <i
+                @click="balance"
+                style="font-weight: 700; color: #008bd7; cursor: pointer"
+                class="el-icon-refresh-left"
+              ></i>
+              <a
                 href="https://xuper.baidu.com/n/console#/finance/wallet/recharge"
                 target="_blank"
-                style='text-decoration: none;color:#008BD7;float:right'
+                style="text-decoration: none; color: #008bd7; float: right"
               >
                 去充值
               </a>
@@ -66,227 +80,240 @@
         </el-col>
       </el-row>
     </div>
-    <p style='color:red;font-size:14px' v-if="balanceMoney===0">建议在百度超级链充值0.1元，体验插件功能</p>
+    <p style="color: red; font-size: 14px" v-if="balanceMoney === 0">
+      建议在百度超级链充值0.1元，体验插件功能
+    </p>
     <div class="tab">
       <el-row>
         <el-col :span="8">
-          <div class="grid-content bg-purple" style='cursor:pointer' @click="getDetails('转移资产')">
+          <div
+            class="grid-content bg-purple"
+            style="cursor: pointer"
+            @click="getDetails('转移资产')"
+          >
             <p><i class="el-icon-coin"></i></p>
-            <p style='font-size:14px'>转移资产</p>
+            <p style="font-size: 14px">转移资产</p>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple-light" style='cursor:pointer' @click="getDetails('查询NFT余额')">
+          <div
+            class="grid-content bg-purple-light"
+            style="cursor: pointer"
+            @click="getDetails('查询NFT余额')"
+          >
             <p><i class="el-icon-view"></i></p>
-            <p style='font-size:14px'>查询NFT余额</p>
+            <p style="font-size: 14px">查询NFT余额</p>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content bg-purple" style='cursor:pointer' @click="getDetails('查询交易')">
+          <div
+            class="grid-content bg-purple"
+            style="cursor: pointer"
+            @click="getDetails('查询交易')"
+          >
             <p><i class="el-icon-soccer"></i></p>
-            <p style='font-size:14px'>查询交易</p>
+            <p style="font-size: 14px">查询交易</p>
           </div>
         </el-col>
       </el-row>
     </div>
-    <el-dialog
-      :visible.sync="dialogVisible"
-      width="90%">
-        <el-form style='text-align:left' label-position="top" :rules='rules' :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="网络名称" prop="netName">
-            <el-input v-model="ruleForm.netName" placeholder="请输入网络名称"></el-input>
-          </el-form-item>
-          <el-form-item label="网络节点" prop="node">
-            <el-input v-model="ruleForm.node" placeholder="请输入网络节点"></el-input>
-          </el-form-item>
-          <el-form-item label="链名" prop="chain">
-            <el-input v-model="ruleForm.chain" placeholder="请输入链名"></el-input>
-          </el-form-item>
-        </el-form>
+    <el-dialog :visible.sync="dialogVisible" width="90%">
+      <el-form
+        style="text-align: left"
+        label-position="top"
+        :rules="rules"
+        :model="ruleForm"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="网络名称" prop="netName">
+          <el-input
+            v-model="ruleForm.netName"
+            placeholder="请输入网络名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="网络节点" prop="node">
+          <el-input
+            v-model="ruleForm.node"
+            placeholder="请输入网络节点"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="链名" prop="chain">
+          <el-input
+            v-model="ruleForm.chain"
+            placeholder="请输入链名"
+          ></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size='small' @click="dialogVisible = false">取 消</el-button>
-        <el-button size='small' type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+        <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="submitForm('ruleForm')"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
-import XuperSDK,{ Endorsement } from '@xuperchain/xuper-sdk';
+import { xsdk } from "../utils/index";
 export default {
-  name:'Home',
+  name: "Home",
   data() {
     return {
-      address:JSON.parse(localStorage.getItem("acc")).address,
-      balanceMoney:0,
-      dialogVisible:false,
-      ruleForm:{
-        netName:'',
-        node:'',
-        chain:'',
+      address: JSON.parse(localStorage.getItem("acc")).address,
+      balanceMoney: 0,
+      dialogVisible: false,
+      ruleForm: {
+        netName: "",
+        node: "",
+        chain: "",
       },
-      node:'',
-      chain:'',
-      value:'开放网络',
+      node: "",
+      chain: "",
+      value: "开放网络",
       rules: {
         netName: [
-          { required: true, message: '网络名称不能为空', trigger: 'blur' },
+          { required: true, message: "网络名称不能为空", trigger: "blur" },
         ],
-        node:[
-          { required: true, message: '网络节点不能为空', trigger: 'blur' },
+        node: [
+          { required: true, message: "网络节点不能为空", trigger: "blur" },
         ],
-        chain:[
-          { required: true, message: '链名不能为空', trigger: 'blur' },
-        ],
+        chain: [{ required: true, message: "链名不能为空", trigger: "blur" }],
       },
-      options:[
-        {netName:'开放网络',node:'https://xuper.baidu.com/nodeapi',chain:'xuper'}
-      ]
-    }
+      options: [
+        {
+          netName: "开放网络",
+          node: "https://xuper.baidu.com/nodeapi",
+          chain: "xuper",
+        },
+      ],
+    };
   },
-  components: {
-    
-  },
-  created(){
-    if(localStorage.getItem('netList')){
-      var arr = JSON.parse(localStorage.getItem('netList')).netList
-      this.options = this.options.concat(arr)
-      this.options.forEach(item => {
-        if(this.value == item.netName){
-          this.node = item.node
-          this.chain = item.chain
-          this.balance()
+  components: {},
+  created() {
+    if (localStorage.getItem("netList")) {
+      var arr = JSON.parse(localStorage.getItem("netList")).netList;
+      this.options = this.options.concat(arr);
+      this.options.forEach((item) => {
+        if (this.value == item.netName) {
+          this.node = item.node;
+          this.chain = item.chain;
+          this.balance();
         }
-      });  
-    }else{
-      this.options.forEach(item => {
-        if(this.value == item.netName){
-          this.node = item.node
-          this.chain = item.chain
-          this.balance()
+      });
+    } else {
+      this.options.forEach((item) => {
+        if (this.value == item.netName) {
+          this.node = item.node;
+          this.chain = item.chain;
+          this.balance();
         }
       });
     }
+    localStorage.setItem("nodeApi", this.options[0].node);
+    localStorage.setItem("chain", this.options[0].chain);
   },
-   methods:{
-     //判断数据
-    getSelect(value){
-      this.options.forEach(item => {
-        if(value == item.netName){
-          this.node = item.node
-          this.chain = item.chain
-          this.balance()
+  methods: {
+    //判断数据
+    getSelect(value) {
+      console.log(value);
+      this.options.forEach((item) => {
+        if (value == item.netName) {
+          this.node = item.node;
+          this.chain = item.chain;
+          localStorage.setItem("nodeApi", item.node);
+          localStorage.setItem("chain", item.chain);
+          this.balance();
         }
       });
-      
     },
-     //添加网络
+    //添加网络
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var netArr = {
-              netList:[]
-            }
-            if(localStorage.getItem('netList')){
-              netArr.netList = JSON.parse(localStorage.getItem('netList')).netList
-              netArr.netList.push(this.ruleForm)
-              localStorage.setItem('netList',JSON.stringify(netArr))
-            }else{
-              netArr.netList.push(this.ruleForm)
-              localStorage.setItem('netList',JSON.stringify(netArr))
-            }
-            this.dialogVisible = false
-            window.location.reload()
+            netList: [],
+          };
+          if (localStorage.getItem("netList")) {
+            netArr.netList = JSON.parse(
+              localStorage.getItem("netList")
+            ).netList;
+            netArr.netList.push(this.ruleForm);
+            localStorage.setItem("netList", JSON.stringify(netArr));
+          } else {
+            netArr.netList.push(this.ruleForm);
+            localStorage.setItem("netList", JSON.stringify(netArr));
+          }
+          this.dialogVisible = false;
+          window.location.reload();
         } else {
           return false;
         }
       });
     },
-
     //查询余额
-    getDetails(index){
-      if(this.balanceMoney === 0 ){
-        this.$message.warning('请您至少充值0.1元即可正常体验插件功能')
-      }else{
-        this.$router.push({path:'/Details',query:{index:index}})
+    getDetails(index) {
+      if (this.balanceMoney === 0) {
+        this.$message.warning("请您至少充值0.1元即可正常体验插件功能");
+      } else {
+        this.$router.push({ path: "/Details", query: { index: index } });
       }
     },
-    async balance(){
-      const node = this.node;
-      const chain = this.chain;
-      const params = {
-      server: "https://xuper.baidu.com/nodeapi", // ip, port
-      fee: "400", // fee
-      endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
-      endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT" // fee address
-      }
-      let nodeStatus = null
-      if(node === "https://xuper.baidu.com/nodeapi"){
-        nodeStatus = [
-              Endorsement({
-                  transfer: params,
-                  makeTransaction: params
-              })
-          ]
-      }else{
-        nodeStatus = null
-      }
-      const xsdk = new XuperSDK({
-          node,
-          chain,
-          plugins: nodeStatus         
-      });
-      const getBalance = async(address) => {
+    async balance() {
+      const getBalance = async (address) => {
         // eslint-disable-next-line no-useless-catch
         try {
-          const result = await xsdk.getBalance(address)
-          this.balanceMoney = (result.bcs[0].balance / 100000).toFixed(3)
+          const result = await xsdk.getBalance(address);
+          console.log(result);
+          this.balanceMoney = (result.bcs[0].balance / 100000).toFixed(3);
         } catch (err) {
-          throw err
+          throw err;
         }
-      }
-      getBalance(this.address)
+      };
+      getBalance(this.address);
     },
-  }
-}
+  },
+};
 </script>
 <style scoped>
-.home{
+.home {
   width: 400px;
   margin: auto;
 }
-.home .help{
+.home .help {
   width: 80%;
   margin: auto;
   text-align: right;
   padding-top: 20px;
 }
-.home .header{
+.home .header {
   width: 90%;
   height: 100px;
   margin: auto;
   padding-top: 30px;
 }
-.home .balance{
-  width:90%;
+.home .balance {
+  width: 90%;
   margin: auto;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   border-radius: 20px;
-  padding:15px 10px 15px 10px;
+  padding: 15px 10px 15px 10px;
 }
-.home .balance p{
+.home .balance p {
   text-align: left;
 }
-.home .tab{
+.home .tab {
   margin-top: 30px;
   margin-bottom: 30px;
 }
-.home .tab i{
-  color: #008BD7;
+.home .tab i {
+  color: #008bd7;
   font-size: 24px;
 }
 </style>
 <style>
-  .el-dialog__header{
-    padding: 0;
-  }
+.el-dialog__header {
+  padding: 0;
+}
 </style>
