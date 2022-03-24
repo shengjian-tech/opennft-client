@@ -15,8 +15,9 @@ window.addEventListener(
     if (isJsonString(event.data)) {
       let data = JSON.parse(event.data);
       if (
-        (data && data.message !== "OpenNFT_transfer") ||
-        data.message !== "OpenNFT_demand"
+        data &&
+        (data.message === "OpenNFT_transfer" ||
+          data.message === "OpenNFT_demand")
       ) {
         chrome.runtime.sendMessage(event.data);
       }
