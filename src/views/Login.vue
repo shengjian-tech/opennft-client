@@ -4,7 +4,7 @@
       <el-button
         type="text"
         style="float: left; font-size: 14px; color: #409eff"
-        >版本号：0.0.2</el-button
+        >版本号：0.0.3</el-button
       >
       <el-popover placement="bottom" width="100" trigger="click">
         <img width="100%" src="../assets/makerOneChat.jpg" alt="" />

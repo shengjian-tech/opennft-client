@@ -15,12 +15,12 @@
   "content_security_policy":"script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"icons":
 	{
-		"16": "./img/avatar.png",
-		"48": "./img/avatar.png",
-		"128": "./img/avatar.png"
+		"16": "./avatar.png",
+		"48": "./avatar.png",
+		"128": "./avatar.png"
 	},
   "browser_action": {
-    "default_icon": "./img/avatar.png",
+    "default_icon": "./avatar.png",
     "default_title": "MakerOne",
     "default_popup": "./index.html"
   },
