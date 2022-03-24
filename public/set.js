@@ -1,5 +1,4 @@
 //监听window消息，并发送给插件bg.js
-
 function isJsonString(str) {
   try {
     if (typeof JSON.parse(str) == "object") {
@@ -12,7 +11,6 @@ function isJsonString(str) {
 window.addEventListener(
   "message",
   function (event) {
-    console.log(event.data);
     console.log(isJsonString(event.data));
     if (isJsonString(event.data)) {
       let data = JSON.parse(event.data);

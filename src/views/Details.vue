@@ -613,7 +613,7 @@ export default {
                     JSON.parse(result)[0]["0"]
                   }</b>
                   <br/>
-                  冷却期为<b style='padding-left:5px'>${tokenExpireTime}</b>天`,
+                  冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>天`,
                   type: "success",
                   duration: 0,
                 });

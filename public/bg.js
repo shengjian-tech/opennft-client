@@ -35,3 +35,17 @@ chrome.runtime.onMessage.addListener((res) => {
     }
   }
 });
+// chrome.runtime.onMessageExternal.addListener(function (
+//   request,
+//   sender,
+//   sendResponse
+// ) {
+//   if (request) {
+//     if (request.message) {
+//       if (request.message == "is_install") {
+//         sendResponse({ is_install: true });
+//       }
+//     }
+//   }
+//   return true;
+// });
