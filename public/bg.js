@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener((res) => {
   let data = JSON.parse(res);
   if (
     !localStorage.getItem("acc") &&
-    (data.message !== "OpenNFT_transfer" || data.message !== "OpenNFT_demand")
+    (data.message === "OpenNFT_transfer" || data.message === "OpenNFT_demand")
   ) {
     //判断是否登录
     chrome.windows.create({
