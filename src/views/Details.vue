@@ -577,7 +577,7 @@ export default {
         }
       });
     },
-    //查询NFT余额
+    //查询 NFT 余额
     findAssets(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -623,13 +623,17 @@ export default {
                 const str =
                   demo.preExecutionTransaction.response.responses[len - 1].body;
                 const result = Buffer.from(str, "base64").toString("ascii");
+                const tokenExpireTime = await this.inquireExpireTime(
+                  contractName,
+                  this.ruleForm.token_id
+                );
                 // [{\"0\":\"10\"}]  result 即为 [{\"0\":\"10\"}]  10即为想要的结果，即对应nft 的余额
                 this.$notify({
                   title: "查询成功",
                   dangerouslyUseHTMLString: true,
                   message: `当前您的资产数量为<b style='padding-left:5px'>${
                     JSON.parse(result)[0]["0"]
-                  }</b>`,
+                  }</b> <br/> 冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>`,
                   type: "success",
                   duration: 0,
                 });
