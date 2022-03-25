@@ -333,7 +333,8 @@
 </template>
 
 <script>
-import { xsdk } from "../utils/index";
+// import { xsdk } from "../utils/index";
+import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
 import { XchainAddrToEvm, EvmToXchainAddr } from "../assets/js/index";
 import Clipboard from "clipboard";
 export default {
@@ -517,6 +518,24 @@ export default {
     TransferNFTEvm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          const node = "https://xuper.baidu.com/nodeapi";
+          const chain = "xuper";
+          const params = {
+            server: "https://xuper.baidu.com/nodeapi", // ip, port
+            fee: "400", // fee
+            endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+            endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+          };
+          const xsdk = new XuperSDK({
+            node,
+            chain,
+            plugins: [
+              Endorsement({
+                transfer: params,
+                makeTransaction: params,
+              }),
+            ],
+          });
           const moveAssets = async (toAddr, TokenID, Amount) => {
             try {
               const contractName = this.contractName;
@@ -577,6 +596,24 @@ export default {
     findAssets(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          const node = "https://xuper.baidu.com/nodeapi";
+          const chain = "xuper";
+          const params = {
+            server: "https://xuper.baidu.com/nodeapi", // ip, port
+            fee: "400", // fee
+            endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+            endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+          };
+          const xsdk = new XuperSDK({
+            node,
+            chain,
+            plugins: [
+              Endorsement({
+                transfer: params,
+                makeTransaction: params,
+              }),
+            ],
+          });
           const acc = JSON.parse(localStorage.getItem("acc"));
           const queryNFTBalance = async (tokenID) => {
             try {
@@ -613,7 +650,7 @@ export default {
                     JSON.parse(result)[0]["0"]
                   }</b>
                   <br/>
-                  冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>天`,
+                  冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>`,
                   type: "success",
                   duration: 0,
                 });
@@ -632,6 +669,24 @@ export default {
     findOrder(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          const node = "https://xuper.baidu.com/nodeapi";
+          const chain = "xuper";
+          const params = {
+            server: "https://xuper.baidu.com/nodeapi", // ip, port
+            fee: "400", // fee
+            endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+            endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+          };
+          const xsdk = new XuperSDK({
+            node,
+            chain,
+            plugins: [
+              Endorsement({
+                transfer: params,
+                makeTransaction: params,
+              }),
+            ],
+          });
           const acc = JSON.parse(localStorage.getItem("acc"));
           const GetTxDetail = async (txId) => {
             try {
@@ -810,6 +865,24 @@ export default {
      */
     async inquireExpireTime(contractName, tokenID) {
       try {
+        const node = "https://xuper.baidu.com/nodeapi";
+        const chain = "xuper";
+        const params = {
+          server: "https://xuper.baidu.com/nodeapi", // ip, port
+          fee: "400", // fee
+          endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+          endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+        };
+        const xsdk = new XuperSDK({
+          node,
+          chain,
+          plugins: [
+            Endorsement({
+              transfer: params,
+              makeTransaction: params,
+            }),
+          ],
+        });
         const acc = JSON.parse(localStorage.getItem("acc"));
         const args = { _id: tokenID };
         const res = await xsdk.invokeSolidityContarct(
@@ -855,7 +928,7 @@ export default {
         var finelTime =
           Math.ceil(time / 3600 / 24) <= 0
             ? "可转移"
-            : Math.ceil(time / 3600 / 24);
+            : `${Math.ceil(time / 3600 / 24)}天`;
         return finelTime;
       } catch (err) {
         console.log(err);

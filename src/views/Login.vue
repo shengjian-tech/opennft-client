@@ -113,10 +113,10 @@ export default {
         const acc = xsdk.import(this.password, this.key);
         if (acc) {
           localStorage.setItem("acc", JSON.stringify(acc));
-          let data = JSON.parse(this.detailData);
           //如果是调用插件进来，未登录情况下，登录后，需要跳转到对应页面。
           //begin
-          if (data) {
+          if (this.detailData) {
+            let data = JSON.parse(this.detailData);
             if (data.message == "OpenNFT_transfer") {
               this.$router.push({
                 path: "/Details",

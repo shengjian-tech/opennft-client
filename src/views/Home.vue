@@ -156,7 +156,7 @@
   </div>
 </template>
 <script>
-import { xsdk } from "../utils/index";
+import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
 export default {
   name: "Home",
   data() {
@@ -261,6 +261,29 @@ export default {
       }
     },
     async balance() {
+      const node = "https://xuper.baidu.com/nodeapi";
+      const chain = "xuper";
+      const params = {
+        server: "https://xuper.baidu.com/nodeapi", // ip, port
+        fee: "400", // fee
+        endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+        endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+      };
+      var xsdk = XuperSDK.getInstance({
+        node,
+        chain,
+        env: {
+          node: {
+            disableGRPC: true,
+          },
+        },
+        plugins: [
+          Endorsement({
+            transfer: params,
+            makeTransaction: params,
+          }),
+        ],
+      });
       const getBalance = async (address) => {
         // eslint-disable-next-line no-useless-catch
         try {
