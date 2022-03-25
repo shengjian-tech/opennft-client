@@ -8,12 +8,21 @@
           </div>
         </el-col>
         <el-col :span="12">
-          <el-button
+          <!-- <el-button
             style="float: right"
             type="text"
             @click="(visible = true), (addForm.formValue = [])"
             >新增操作</el-button
+          > -->
+          <el-popover
+            style="float: right"
+            placement="bottom"
+            width="100"
+            trigger="click"
           >
+            <img width="100%" src="../assets/makerOneChat.jpg" alt="" />
+            <el-button type="text" slot="reference">帮助</el-button>
+          </el-popover>
         </el-col>
       </el-row>
     </div>
