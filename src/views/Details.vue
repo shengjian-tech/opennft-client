@@ -418,9 +418,9 @@ export default {
   },
   filters: {
     formatDate: function getLocalTime(nS) {
-      return new Date(parseInt(nS) * 1000)
+      return new Date(parseInt(String(nS).substring(0, 10)) * 1000)
         .toLocaleString()
-        .replace(/:\d{1,2}$/, " ");
+        .replace(/:\d{1}$/, " ");
     },
   },
   components: {},
@@ -856,6 +856,84 @@ export default {
           return false;
         }
       });
+    },
+    //查询藏品冷却期
+    /*
+     @param{
+        contractName,
+        tokenID
+      }
+     */
+    async inquireExpireTime(contractName, tokenID) {
+      try {
+        const node = "https://xuper.baidu.com/nodeapi";
+        const chain = "xuper";
+        const params = {
+          server: "https://xuper.baidu.com/nodeapi", // ip, port
+          fee: "400", // fee
+          endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+          endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+        };
+        const xsdk = new XuperSDK({
+          node,
+          chain,
+          plugins: [
+            Endorsement({
+              transfer: params,
+              makeTransaction: params,
+            }),
+          ],
+        });
+        const acc = JSON.parse(localStorage.getItem("acc"));
+        const args = { _id: tokenID };
+        const res = await xsdk.invokeSolidityContarct(
+          contractName,
+          "getExpireTime",
+          "evm",
+          args,
+          "0",
+          acc
+        );
+        const len = res.preExecutionTransaction.response.responses.length;
+        if (len > 0) {
+          var result =
+            res.preExecutionTransaction.response.responses[len - 1].body;
+          var response = JSON.parse(Buffer.from(result, "base64").toString());
+          var tokenExpireTiem = response[0]["0"];
+          // console.log(response);
+          // let tokenOwnerExpireTiem =
+          //   response[0]["0"] -
+          //   (Date.parse(new Date()) / 1000 - response[0]["0"]);
+          // console.log(tokenOwnerExpireTiem);
+          // return Math.ceil(tokenOwnerExpireTiem / 3600 / 24);
+        }
+        const res1 = await xsdk.invokeSolidityContarct(
+          contractName,
+          "getTokenExpireTime",
+          "evm",
+          args,
+          "0",
+          acc
+        );
+        const len1 = res1.preExecutionTransaction.response.responses.length;
+        if (len1 > 0) {
+          var result1 =
+            res1.preExecutionTransaction.response.responses[len1 - 1].body;
+          var response1 = JSON.parse(Buffer.from(result1, "base64").toString());
+          // 该ID资产的交易保护时间
+          var tokenOwnerExpireTiem = response1[0]["0"];
+        }
+        var time =
+          tokenExpireTiem -
+          (Date.parse(new Date()) / 1000 - tokenOwnerExpireTiem);
+        var finelTime =
+          Math.ceil(time / 3600 / 24) <= 0
+            ? "可转移"
+            : `${Math.ceil(time / 3600 / 24)}天`;
+        return finelTime;
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
