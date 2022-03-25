@@ -15,7 +15,7 @@
       <img src="../assets/avatar.png" alt="" />
       <br /><br />
       <el-row>
-        <el-col :span="18">
+        <el-col :span="24">
           <el-select @change="getSelect" style="width: 100%" v-model="value">
             <el-option
               v-for="(item, index) in options"
@@ -26,14 +26,14 @@
             </el-option>
           </el-select>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-button
             style="float: right"
             type="text"
             @click="dialogVisible = true"
             >添加网络</el-button
           >
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
     <br />
@@ -99,10 +99,10 @@
           <div
             class="grid-content bg-purple-light"
             style="cursor: pointer"
-            @click="getDetails('查询NFT余额')"
+            @click="getDetails('查询资产数量')"
           >
             <p><i class="el-icon-view"></i></p>
-            <p style="font-size: 14px">查询NFT余额</p>
+            <p style="font-size: 14px">查询资产数量</p>
           </div>
         </el-col>
         <el-col :span="8">

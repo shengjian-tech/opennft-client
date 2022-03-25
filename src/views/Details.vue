@@ -67,7 +67,7 @@
               >执行</el-button
             >
             <el-button
-              v-else-if="value == '查询NFT余额'"
+              v-else-if="value == '查询资产数量'"
               style="width: 80%; background-color: #008bd7; border: none"
               type="primary"
               round
@@ -94,7 +94,7 @@
         </el-form-item>
       </el-form>
       <el-dialog
-        title="交易ID"
+        title="交易凭证"
         :visible.sync="dialogVisible"
         width="80%"
         :close-on-click-modal="false"
@@ -147,7 +147,7 @@
           <el-row :gutter="10" style="margin-top: 5px">
             <el-col :span="6"
               ><div class="grid-content bg-purple" style="text-align: right">
-                <b>交易ID：</b>
+                <b>交易凭证：</b>
               </div></el-col
             >
             <el-col :span="18"
@@ -388,8 +388,8 @@ export default {
           label: "转移资产",
         },
         {
-          value: "查询NFT余额",
-          label: "查询NFT余额",
+          value: "查询资产数量",
+          label: "查询资产数量",
         },
         {
           value: "查询交易",
@@ -403,13 +403,13 @@ export default {
           type: "transaction",
           methodName: "safeTransferFrom",
           formValue: [
-            { value: "address", label: "接受者账户" },
+            { value: "address", label: "接受方address" },
             { value: "token_id", label: "资产ID" },
             { value: "num", label: "数量" },
           ],
         },
         {
-          name: "查询NFT余额",
+          name: "查询资产数量",
           contractName: "opennft",
           type: "query",
           methodName: "balanceOf",
@@ -420,7 +420,7 @@ export default {
           contractName: "opennft",
           type: "query",
           methodName: "getTokenBytes",
-          formValue: [{ value: "txId", label: "交易ID" }],
+          formValue: [{ value: "txId", label: "交易凭证" }],
         },
       ],
     };
