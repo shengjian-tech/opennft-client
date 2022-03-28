@@ -163,7 +163,7 @@
             >
             <el-col :span="18"
               ><div class="grid-content bg-purple" style="text-align: left">
-                {{ txDetail.timestamp | formatDate }}
+                {{ txDetail.timestamp }}
               </div></el-col
             >
           </el-row>
@@ -235,6 +235,7 @@ import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
 import { XchainAddrToEvm, EvmToXchainAddr } from "../assets/js/index";
 import Clipboard from "clipboard";
 import Header from "../components/Header";
+import dayjs from "dayjs";
 export default {
   name: "Details",
   data() {
@@ -304,13 +305,6 @@ export default {
         },
       ],
     };
-  },
-  filters: {
-    formatDate: function getLocalTime(nS) {
-      return new Date(parseInt(String(nS).substring(0, 10)) * 1000)
-        .toLocaleString()
-        .replace(/:\d{1}$/, " ");
-    },
   },
   components: { Header },
   mounted() {
@@ -638,7 +632,11 @@ export default {
                 var data = Buffer.from(base64Addr, "base64").toString();
                 var dataJson = JSON.parse(data);
               }
-              var timestamp = parseInt(demo.tx.timestamp / 1000);
+              var timestamp = String(parseInt(demo.tx.timestamp)).substring(
+                0,
+                13
+              );
+              console.log(timestamp);
               // 用户查看交易详情，前端显示下述txDetail信息。
               var txDetail = {
                 txID: txID,
@@ -646,7 +644,9 @@ export default {
                 to: to,
                 id: tokenID,
                 amount: amount,
-                timestamp: timestamp,
+                timestamp: dayjs(parseInt(timestamp)).format(
+                  "YYYY-MM-DD HH:mm:ss"
+                ),
               };
               var nftDetail = {
                 link: dataJson.link,
