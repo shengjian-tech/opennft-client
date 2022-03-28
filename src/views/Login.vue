@@ -1,18 +1,15 @@
 <template>
   <div class="login">
-    <div class="help">
-      <el-button
-        type="text"
-        style="float: left; font-size: 14px; color: #409eff"
-        >版本号：0.0.3</el-button
-      >
-      <el-popover placement="bottom" width="100" trigger="click">
-        <img width="100%" src="../assets/makerOneChat.jpg" alt="" />
-        <el-button type="text" slot="reference">帮助</el-button>
-      </el-popover>
+    <Header />
+    <div class="header_list"><img src="../assets/logo.png" alt="" /></div>
+    <div class="write" v-if="other_state">
+      <el-col :span="24">
+        <el-input placeholder="助记词" v-model="password">
+          <i slot="prefix" class="el-input__icon el-icon-lollipop"></i>
+        </el-input>
+      </el-col>
     </div>
-    <div class="header"><img src="../assets/logo.png" alt="" /></div>
-    <div class="write">
+    <div class="write" v-else>
       <el-row :gutter="10">
         <el-col :span="12">
           <div class="grid-content bg-purple">
@@ -55,6 +52,7 @@
         <i slot="prefix" class="el-input__icon el-icon-lollipop"></i>
       </el-input>
     </div>
+
     <div class="submit">
       <el-button
         @click="getLogin"
@@ -63,12 +61,17 @@
         round
         >登录</el-button
       >
+      <a class="other_login" @click="otherLogin()" v-if="other_state"
+        >使用私钥登录</a
+      >
+      <a class="other_login" @click="otherLogin()" v-else>使用助记词登录</a>
     </div>
   </div>
 </template>
 
 <script>
 import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
+import Header from "../components/Header";
 export default {
   name: "Login",
   data() {
@@ -76,9 +79,10 @@ export default {
       private_key: "",
       password: "",
       key: "",
+      other_state: false,
     };
   },
-  components: {},
+  components: { Header },
   created() {
     if (localStorage.getItem("acc")) {
       this.$router.push("/Home");
@@ -86,10 +90,12 @@ export default {
   },
   methods: {
     getLogin() {
-      if (this.private_key == "") {
+      if (this.private_key == "" && this.other_state !== true) {
         this.$message("请选择您的本地key文件以获取私钥路径");
       } else if (this.password == "") {
-        this.$message("请填写您的安全码");
+        this.other_state == true
+          ? this.$message("请填写您的助记词")
+          : this.$message("请填写您的安全码");
       } else {
         const node = "https://xuper.baidu.com/nodeapi";
         const chain = "xuper";
@@ -109,10 +115,23 @@ export default {
             }),
           ],
         });
-        const acc = xsdk.import(this.password, this.key);
+        let acc = null;
+        if (this.other_state == true) {
+          acc = xsdk.retrieve(this.password, "SimplifiedChinese");
+        } else {
+          acc = xsdk.import(this.password, this.key);
+        }
         if (acc) {
           localStorage.setItem("acc", JSON.stringify(acc));
-          this.$router.push("/Home");
+          if (this.$route.query.index) {
+            this.$router.push(
+              `/Details?${window.location.hash.substring(
+                window.location.hash.indexOf("?") + 1
+              )}`
+            );
+          } else {
+            this.$router.push("/Home");
+          }
         } else {
           this.$$message.warning("请检查私钥和安全码");
         }
@@ -132,6 +151,11 @@ export default {
         that.key = this.result;
       };
     },
+    otherLogin() {
+      this.other_state == true
+        ? (this.other_state = false)
+        : (this.other_state = true);
+    },
   },
 };
 </script>
@@ -146,7 +170,7 @@ export default {
   text-align: right;
   padding-top: 20px;
 }
-.login .header {
+.login .header_list {
   color: brown;
   text-align: center;
   height: 80px;
@@ -158,9 +182,19 @@ export default {
   margin: auto;
 }
 .login .submit {
-  width: 80%;
+  width: 100%;
   margin: auto;
   margin-top: 30px;
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.other_login {
+  color: #409eff;
+  font-size: 12px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 </style>

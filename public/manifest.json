@@ -1,0 +1,18 @@
+{
+	"manifest_version": 2,
+	"name": "MakerONE",
+	"version": "0.0.4",
+	"description": "MakerONE 创造我热爱的世界",
+  "content_security_policy":"script-src 'self' 'unsafe-eval'; object-src 'self'",
+	"icons":
+	{
+		"16": "./avatar.png",
+		"48": "./avatar.png",
+		"128": "./avatar.png"
+	},
+  "browser_action": {
+    "default_icon": "./avatar.png",
+    "default_title": "MakerOne",
+    "default_popup": "./index.html"
+  }
+}

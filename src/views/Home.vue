@@ -1,17 +1,7 @@
 <template>
   <div class="home">
-    <div class="help">
-      <el-button
-        type="text"
-        style="float: left; font-size: 14px; color: #409eff"
-        >版本号：0.0.3</el-button
-      >
-      <el-popover placement="bottom" width="100" trigger="click">
-        <img width="100%" src="../assets/makerOneChat.jpg" alt="" />
-        <el-button type="text" slot="reference">帮助</el-button>
-      </el-popover>
-    </div>
-    <div class="header">
+    <Header />
+    <div class="header_list">
       <img src="../assets/avatar.png" alt="" />
       <br /><br />
       <el-row>
@@ -89,20 +79,20 @@
           <div
             class="grid-content bg-purple"
             style="cursor: pointer"
-            @click="getDetails('转移资产')"
+            @click="getDetails('转移藏品')"
           >
             <p><i class="el-icon-coin"></i></p>
-            <p style="font-size: 14px">转移资产</p>
+            <p style="font-size: 14px">转移藏品</p>
           </div>
         </el-col>
         <el-col :span="8">
           <div
             class="grid-content bg-purple-light"
             style="cursor: pointer"
-            @click="getDetails('查询资产数量')"
+            @click="getDetails('查询藏品数量')"
           >
             <p><i class="el-icon-view"></i></p>
-            <p style="font-size: 14px">查询资产数量</p>
+            <p style="font-size: 14px">查询藏品数量</p>
           </div>
         </el-col>
         <el-col :span="8">
@@ -157,6 +147,7 @@
 </template>
 <script>
 import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
+import Header from "../components/Header";
 export default {
   name: "Home",
   data() {
@@ -190,7 +181,7 @@ export default {
       ],
     };
   },
-  components: {},
+  components: { Header },
   created() {
     if (localStorage.getItem("netList")) {
       var arr = JSON.parse(localStorage.getItem("netList")).netList;
@@ -306,7 +297,7 @@ export default {
   text-align: right;
   padding-top: 20px;
 }
-.home .header {
+.home .header_list {
   width: 90%;
   height: 100px;
   margin: auto;

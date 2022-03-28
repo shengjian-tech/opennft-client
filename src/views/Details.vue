@@ -1,31 +1,6 @@
 <template>
-  <div class="details">
-    <div class="header">
-      <el-row>
-        <el-col :span="12">
-          <div @click="getSetting" class="return">
-            <i class="el-icon-arrow-left"></i>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <!-- <el-button
-            style="float: right"
-            type="text"
-            @click="(visible = true), (addForm.formValue = [])"
-            >新增操作</el-button
-          > -->
-          <el-popover
-            style="float: right"
-            placement="bottom"
-            width="100"
-            trigger="click"
-          >
-            <img width="100%" src="../assets/makerOneChat.jpg" alt="" />
-            <el-button type="text" slot="reference">帮助</el-button>
-          </el-popover>
-        </el-col>
-      </el-row>
-    </div>
+  <div class="details" v-loading.fullscreen.lock="fullscreenLoading">
+    <Header />
     <div class="write">
       <el-select @change="getSelect" style="width: 100%" v-model="value">
         <el-option
@@ -59,7 +34,7 @@
         <el-form-item>
           <div style="text-align: center">
             <el-button
-              v-if="value == '转移资产'"
+              v-if="value == '转移藏品'"
               style="width: 80%; background-color: #008bd7; border: none"
               type="primary"
               round
@@ -67,7 +42,7 @@
               >执行</el-button
             >
             <el-button
-              v-else-if="value == '查询资产数量'"
+              v-else-if="value == '查询藏品数量'"
               style="width: 80%; background-color: #008bd7; border: none"
               type="primary"
               round
@@ -251,92 +226,6 @@
           </el-row>
         </div>
       </el-dialog>
-      <el-dialog
-        :visible.sync="visible"
-        width="90%"
-        :close-on-click-modal="false"
-        :close-on-press-escape="false"
-      >
-        <el-form
-          style="text-align: left"
-          label-position="top"
-          :model="addForm"
-          :rules="rules1"
-          ref="addForm"
-          label-width="100px"
-        >
-          <el-row :gutter="20">
-            <el-col :span="16">
-              <el-form-item label="操作名称" prop="name">
-                <el-input
-                  v-model="addForm.name"
-                  placeholder="请输入您要添加的操作名称"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="操作类型" prop="type">
-                <el-radio-group v-model="addForm.type">
-                  <el-radio label="transaction">交易</el-radio>
-                  <el-radio label="query">查询</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="合约名" prop="contractName">
-            <el-input
-              v-model="addForm.contractName"
-              placeholder="请输入合约名"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="方法名" prop="methodName">
-            <el-input
-              v-model="addForm.methodName"
-              placeholder="请输入方法名"
-            ></el-input>
-          </el-form-item>
-          <div>
-            <el-button size="small" type="primary" @click="addParams"
-              >添加操作参数</el-button
-            >
-            <el-row
-              :gutter="20"
-              v-for="(item, index) in addForm.formValue"
-              :key="index"
-            >
-              <el-col :span="10">
-                <el-form-item label="参数名称">
-                  <el-input
-                    v-model="item.label"
-                    placeholder="请输入您要添加的参数名称"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="10">
-                <el-form-item label="参数">
-                  <el-input
-                    v-model="item.value"
-                    placeholder="请输入您要添加的参数"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <i
-                  @click.prevent="removeDomain(item)"
-                  style="font-size: 24px; margin-top: 35%; cursor: pointer"
-                  class="el-icon-remove-outline"
-                ></i>
-              </el-col>
-            </el-row>
-          </div>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button size="small" @click="visible = false">取 消</el-button>
-          <el-button size="small" type="primary" @click="submit('addForm')"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -345,10 +234,12 @@
 import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
 import { XchainAddrToEvm, EvmToXchainAddr } from "../assets/js/index";
 import Clipboard from "clipboard";
+import Header from "../components/Header";
 export default {
   name: "Details",
   data() {
     return {
+      fullscreenLoading: false,
       txId: "",
       txDetail: "",
       nftDetail: "",
@@ -368,28 +259,14 @@ export default {
       },
       ruleForm: {},
       value: this.$route.query.index,
-      rules1: {
-        name: [
-          { required: true, message: "操作名称不能为空", trigger: "blur" },
-        ],
-        contractName: [
-          { required: true, message: "合约名不能为空", trigger: "blur" },
-        ],
-        methodName: [
-          { required: true, message: "方法名不能为空", trigger: "blur" },
-        ],
-        type: [
-          { required: true, message: "选择您的操作类型", trigger: "change" },
-        ],
-      },
       options: [
         {
-          value: "转移资产",
-          label: "转移资产",
+          value: "转移藏品",
+          label: "转移藏品",
         },
         {
-          value: "查询资产数量",
-          label: "查询资产数量",
+          value: "查询藏品数量",
+          label: "查询藏品数量",
         },
         {
           value: "查询交易",
@@ -398,22 +275,25 @@ export default {
       ],
       params: [
         {
-          name: "转移资产",
+          name: "转移藏品",
           contractName: "opennft",
           type: "transaction",
           methodName: "safeTransferFrom",
           formValue: [
             { value: "address", label: "接受方address" },
-            { value: "token_id", label: "资产ID" },
+            { value: "token_id", label: "藏品ID" },
             { value: "num", label: "数量" },
           ],
         },
         {
-          name: "查询资产数量",
+          name: "查询藏品数量",
           contractName: "opennft",
           type: "query",
           methodName: "balanceOf",
-          formValue: [{ value: "token_id", label: "资产ID" }],
+          formValue: [
+            { value: "token_address", label: "查询方address" },
+            { value: "token_id", label: "藏品ID" },
+          ],
         },
         {
           name: "查询交易",
@@ -432,7 +312,18 @@ export default {
         .replace(/:\d{1}$/, " ");
     },
   },
-  components: {},
+  components: { Header },
+  mounted() {
+    console.log(localStorage.getItem("acc"));
+    if (localStorage.getItem("acc") == null) {
+      console.log(window.location.hash);
+      this.$router.replace(
+        `/Login?${window.location.hash.substring(
+          window.location.hash.indexOf("?") + 1
+        )}`
+      );
+    }
+  },
   created() {
     if (localStorage.getItem("addForm")) {
       var arr = JSON.parse(localStorage.getItem("addForm")).addList;
@@ -458,12 +349,23 @@ export default {
         }
       });
     }
+    if (localStorage.getItem("acc")) {
+      this.ruleForm = {
+        token_address: JSON.parse(localStorage.getItem("acc")).address,
+      };
+    }
+    if (this.$route.query.token_id) {
+      this.ruleForm = {
+        token_id: this.$route.query.token_id,
+      };
+    }
+    if (this.$route.query.tx_id) {
+      this.ruleForm = {
+        txId: this.$route.query.tx_id,
+      };
+    }
   },
   methods: {
-    //添加参数
-    addParams() {
-      this.addForm.formValue.push({ value: "", label: "" });
-    },
     //删除新增参数
     removeDomain(item) {
       var index = this.addForm.formValue.indexOf(item);
@@ -481,35 +383,9 @@ export default {
         }
       });
     },
-    getSetting() {
-      this.$router.push("/Home");
-    },
-    //新增操作
-    submit(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          var localArr = {
-            addList: [],
-          };
-          if (localStorage.getItem("addForm")) {
-            localArr.addList = JSON.parse(
-              localStorage.getItem("addForm")
-            ).addList;
-            localArr.addList.push(this.addForm);
-            localStorage.setItem("addForm", JSON.stringify(localArr));
-          } else {
-            localArr.addList.push(this.addForm);
-            localStorage.setItem("addForm", JSON.stringify(localArr));
-          }
-          this.visible = false;
-          window.location.reload();
-        } else {
-          return false;
-        }
-      });
-    },
     // 转移NFT
     TransferNFTEvm(formName) {
+      this.fullscreenLoading = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const node = "https://xuper.baidu.com/nodeapi";
@@ -570,8 +446,10 @@ export default {
             } catch (err) {
               // err 是空 证明转移成功，不是 就是执行失败。
               if (err) {
+                this.fullscreenLoading = false;
                 this.$message.error("转移失败");
               } else {
+                this.fullscreenLoading = false;
                 this.$message.success("转移成功");
               }
             }
@@ -586,8 +464,9 @@ export default {
         }
       });
     },
-    //查询 NFT 余额
+    //查询藏品数量
     findAssets(formName) {
+      this.fullscreenLoading = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const node = "https://xuper.baidu.com/nodeapi";
@@ -614,7 +493,7 @@ export default {
               const contractName = this.contractName;
               const methodName = this.methodName;
               const args = {
-                account: XchainAddrToEvm(acc.address),
+                account: XchainAddrToEvm(this.ruleForm.token_address),
                 id: tokenID,
               };
               const demo = await xsdk.invokeSolidityContarct(
@@ -637,6 +516,7 @@ export default {
                   this.ruleForm.token_id
                 );
                 // [{\"0\":\"10\"}]  result 即为 [{\"0\":\"10\"}]  10即为想要的结果，即对应nft 的余额
+                this.fullscreenLoading = false; //关闭loading
                 this.$notify({
                   title: "查询成功",
                   dangerouslyUseHTMLString: true,
@@ -659,6 +539,7 @@ export default {
     },
     //查询交易
     findOrder(formName) {
+      this.fullscreenLoading = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const node = "https://xuper.baidu.com/nodeapi";
@@ -762,6 +643,7 @@ export default {
                 this.srcList = [];
                 this.nftDetail = nftDetail;
                 this.srcList.push(nftDetail.link);
+                this.fullscreenLoading = false; //关闭loading
                 this.ordersVisible = true;
               }
               return txDetail, nftDetail;
@@ -793,6 +675,7 @@ export default {
     },
     //通用方法
     publicMethod(formName) {
+      this.fullscreenLoading = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const node = "https://xuper.baidu.com/nodeapi";
@@ -825,6 +708,7 @@ export default {
                 acc
               );
               if (type == "query") {
+                this.fullscreenLoading = false;
                 this.$notify({
                   title: "查询成功",
                   dangerouslyUseHTMLString: true,
@@ -834,6 +718,7 @@ export default {
                   type: "success",
                 });
               } else {
+                this.fullscreenLoading = false;
                 this.$notify({
                   title: "查询成功",
                   dangerouslyUseHTMLString: true,
@@ -846,8 +731,10 @@ export default {
               }
             } catch (err) {
               if (err) {
+                this.fullscreenLoading = false;
                 this.$message.error("执行失败");
               } else {
+                this.fullscreenLoading = false;
                 this.$message.success("执行成功");
               }
             }
