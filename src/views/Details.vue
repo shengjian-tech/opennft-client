@@ -314,14 +314,29 @@ export default {
   },
   components: { Header },
   mounted() {
-    console.log(localStorage.getItem("acc"));
     if (localStorage.getItem("acc") == null) {
-      console.log(window.location);
       this.$router.replace(
         `/Login?${window.location.hash.substring(
           window.location.hash.indexOf("?") + 1
         )}`
       );
+    }
+    if (localStorage.getItem("acc")) {
+      this.ruleForm = {
+        token_address: JSON.parse(localStorage.getItem("acc")).address,
+        num: "1",
+      };
+    }
+    if (this.$route.query.token_id) {
+      this.ruleForm = {
+        token_address: JSON.parse(localStorage.getItem("acc")).address,
+        token_id: this.$route.query.token_id,
+      };
+    }
+    if (this.$route.query.tx_id) {
+      this.ruleForm = {
+        txId: this.$route.query.tx_id,
+      };
     }
   },
   created() {
@@ -348,22 +363,6 @@ export default {
           this.type = item.type;
         }
       });
-    }
-    if (localStorage.getItem("acc")) {
-      this.ruleForm = {
-        token_address: JSON.parse(localStorage.getItem("acc")).address,
-        num: 1,
-      };
-    }
-    if (this.$route.query.token_id) {
-      this.ruleForm = {
-        token_id: this.$route.query.token_id,
-      };
-    }
-    if (this.$route.query.tx_id) {
-      this.ruleForm = {
-        txId: this.$route.query.tx_id,
-      };
     }
   },
   methods: {
@@ -443,12 +442,17 @@ export default {
                 });
               }
               const result = xsdk.postTransaction(demo.transaction, acc);
-              console.log(result);
             } catch (err) {
               // err 是空 证明转移成功，不是 就是执行失败。
               if (err) {
                 this.fullscreenLoading = false;
-                this.$message.error("转移失败");
+                this.$notify({
+                  title: "转移失败",
+                  dangerouslyUseHTMLString: true,
+                  message: `${err.error.message}`,
+                  type: "error",
+                  duration: 0,
+                });
               } else {
                 this.fullscreenLoading = false;
                 this.$message.success("转移成功");
@@ -523,13 +527,24 @@ export default {
                   dangerouslyUseHTMLString: true,
                   message: `当前您的资产数量为<b style='padding-left:5px'>${
                     JSON.parse(result)[0]["0"]
-                  }</b> <br/> 冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>`,
+                  }</b> ${
+                    JSON.parse(result)[0]["0"] == 0
+                      ? ""
+                      : `<br/> 冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>`
+                  }`,
                   type: "success",
                   duration: 0,
                 });
               }
             } catch (err) {
-              console.log(err);
+              this.fullscreenLoading = false;
+              this.$notify({
+                title: "查询失败",
+                dangerouslyUseHTMLString: true,
+                message: `${err.error.message}`,
+                type: "error",
+                duration: 0,
+              });
             }
           };
           queryNFTBalance(this.ruleForm.token_id);
@@ -649,7 +664,14 @@ export default {
               }
               return txDetail, nftDetail;
             } catch (err) {
-              console.log(err);
+              this.fullscreenLoading = false;
+              this.$notify({
+                title: "查询失败",
+                dangerouslyUseHTMLString: true,
+                message: `${err}`,
+                type: "error",
+                duration: 0,
+              });
             }
           };
           GetTxDetail(this.ruleForm.txId);
@@ -662,13 +684,11 @@ export default {
       var clipboard = new Clipboard(".tag-read");
       clipboard.on("success", (e) => {
         this.$message.success("复制成功！");
-        console.log(e);
         //  释放内存
         clipboard.destroy();
       });
       clipboard.on("error", (e) => {
         this.$message.success("当前浏览器不支持复制！");
-        console.log(e);
         // 不支持复制
         // 释放内存
         clipboard.destroy();
@@ -733,7 +753,13 @@ export default {
             } catch (err) {
               if (err) {
                 this.fullscreenLoading = false;
-                this.$message.error("执行失败");
+                this.$notify({
+                  title: "查询失败",
+                  dangerouslyUseHTMLString: true,
+                  message: `${err.error.message}`,
+                  type: "error",
+                  duration: 0,
+                });
               } else {
                 this.fullscreenLoading = false;
                 this.$message.success("执行成功");
@@ -829,7 +855,13 @@ export default {
             : `${Math.ceil(time / 3600 / 24)}天`;
         return finelTime;
       } catch (err) {
-        console.log(err);
+        this.$notify({
+          title: "查询失败",
+          dangerouslyUseHTMLString: true,
+          message: `${err.error.message}`,
+          type: "error",
+          duration: 0,
+        });
       }
     },
   },
@@ -871,5 +903,8 @@ export default {
 .el-dialog {
   margin: 0 auto 0;
   margin-top: 10vh !important;
+}
+.el-notification__content {
+  word-break: break-all;
 }
 </style>

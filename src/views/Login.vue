@@ -4,7 +4,7 @@
     <div class="header_list"><img src="../assets/logo.png" alt="" /></div>
     <div class="write" v-if="other_state">
       <el-col :span="24">
-        <el-input placeholder="助忆词" v-model="password" show-password>
+        <el-input placeholder="助记词" v-model="password" show-password>
           <i slot="prefix" class="el-input__icon el-icon-lollipop"></i>
         </el-input>
       </el-col>
@@ -68,7 +68,7 @@
       <a class="other_login" @click="otherLogin()" v-if="other_state"
         >使用私钥登录</a
       >
-      <a class="other_login" @click="otherLogin()" v-else>使用助忆词登录</a>
+      <a class="other_login" @click="otherLogin()" v-else>使用助记词登录</a>
     </div>
   </div>
 </template>
@@ -94,51 +94,62 @@ export default {
   },
   methods: {
     getLogin() {
-      if (this.private_key == "" && this.other_state !== true) {
-        this.$message("请选择您的本地key文件以获取私钥路径");
-      } else if (this.password == "") {
-        this.other_state == true
-          ? this.$message("请填写您的助记词")
-          : this.$message("请填写您的安全码");
-      } else {
-        const node = "https://xuper.baidu.com/nodeapi";
-        const chain = "xuper";
-        const params = {
-          server: "https://xuper.baidu.com/nodeapi", // ip, port
-          fee: "400", // fee
-          endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
-          endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
-        };
-        const xsdk = new XuperSDK({
-          node,
-          chain,
-          plugins: [
-            Endorsement({
-              transfer: params,
-              makeTransaction: params,
-            }),
-          ],
-        });
-        let acc = null;
-        if (this.other_state == true) {
-          acc = xsdk.retrieve(this.password, "SimplifiedChinese");
+      try {
+        if (this.private_key == "" && this.other_state !== true) {
+          this.$message("请选择您的本地key文件以获取私钥路径");
+        } else if (this.password == "") {
+          this.other_state == true
+            ? this.$message("请填写您的助记词")
+            : this.$message("请填写您的安全码");
         } else {
-          acc = xsdk.import(this.password, this.key);
-        }
-        if (acc) {
-          localStorage.setItem("acc", JSON.stringify(acc));
-          if (this.$route.query.index) {
-            this.$router.push(
-              `/Details?${window.location.hash.substring(
-                window.location.hash.indexOf("?") + 1
-              )}`
-            );
+          const node = "https://xuper.baidu.com/nodeapi";
+          const chain = "xuper";
+          const params = {
+            server: "https://xuper.baidu.com/nodeapi", // ip, port
+            fee: "400", // fee
+            endorseServiceCheckAddr: "jknGxa6eyum1JrATWvSJKW3thJ9GKHA9n", // sign address
+            endorseServiceFeeAddr: "aB2hpHnTBDxko3UoP2BpBZRujwhdcAFoT", // fee address
+          };
+          const xsdk = new XuperSDK({
+            node,
+            chain,
+            plugins: [
+              Endorsement({
+                transfer: params,
+                makeTransaction: params,
+              }),
+            ],
+          });
+          let acc = null;
+          if (this.other_state == true) {
+            acc = xsdk.retrieve(this.password, "SimplifiedChinese");
           } else {
-            this.$router.push("/Home");
+            acc = xsdk.import(this.password, this.key);
           }
-        } else {
-          this.$$message.warning("请检查私钥和安全码");
+          if (acc) {
+            localStorage.setItem("acc", JSON.stringify(acc));
+            if (this.$route.query.index) {
+              this.$router.push(
+                `/Details?${window.location.hash.substring(
+                  window.location.hash.indexOf("?") + 1
+                )}`
+              );
+            } else {
+              this.$router.push("/Home");
+            }
+          } else {
+            this.$$message.warning("请检查私钥和安全码");
+          }
         }
+      } catch (err) {
+        console.log(err);
+        this.$notify({
+          title: "登录失败",
+          dangerouslyUseHTMLString: true,
+          message: `${err.message}`,
+          type: "error",
+          duration: 0,
+        });
       }
     },
     clickLoad() {
