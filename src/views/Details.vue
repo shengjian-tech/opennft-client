@@ -69,7 +69,7 @@
         </el-form-item>
       </el-form>
       <el-dialog
-        title="交易凭证"
+        title="交易哈希"
         :visible.sync="dialogVisible"
         width="80%"
         :close-on-click-modal="false"
@@ -122,7 +122,7 @@
           <el-row :gutter="10" style="margin-top: 5px">
             <el-col :span="6"
               ><div class="grid-content bg-purple" style="text-align: right">
-                <b>交易凭证：</b>
+                <b>交易哈希：</b>
               </div></el-col
             >
             <el-col :span="18"
@@ -291,7 +291,7 @@ export default {
           type: "query",
           methodName: "balanceOf",
           formValue: [
-            { value: "token_address", label: "查询方address" },
+            { value: "token_address", label: "查询address" },
             { value: "token_id", label: "藏品ID" },
           ],
         },
@@ -300,7 +300,7 @@ export default {
           contractName: "opennft",
           type: "query",
           methodName: "getTokenBytes",
-          formValue: [{ value: "txId", label: "交易凭证" }],
+          formValue: [{ value: "txId", label: "交易哈希" }],
         },
       ],
     };
@@ -316,7 +316,7 @@ export default {
   mounted() {
     console.log(localStorage.getItem("acc"));
     if (localStorage.getItem("acc") == null) {
-      console.log(window.location.hash);
+      console.log(window.location);
       this.$router.replace(
         `/Login?${window.location.hash.substring(
           window.location.hash.indexOf("?") + 1
@@ -352,6 +352,7 @@ export default {
     if (localStorage.getItem("acc")) {
       this.ruleForm = {
         token_address: JSON.parse(localStorage.getItem("acc")).address,
+        num: 1,
       };
     }
     if (this.$route.query.token_id) {

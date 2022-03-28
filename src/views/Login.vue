@@ -4,7 +4,7 @@
     <div class="header_list"><img src="../assets/logo.png" alt="" /></div>
     <div class="write" v-if="other_state">
       <el-col :span="24">
-        <el-input placeholder="助记词" v-model="password">
+        <el-input placeholder="助忆词" v-model="password" show-password>
           <i slot="prefix" class="el-input__icon el-icon-lollipop"></i>
         </el-input>
       </el-col>
@@ -48,7 +48,11 @@
         >私钥只留存本地，不会上传到任何服务器
       </p>
       <br /><br />
-      <el-input placeholder="安全码（可选，开放网络必填）" v-model="password">
+      <el-input
+        placeholder="安全码（可选，开放网络必填）"
+        v-model="password"
+        show-password
+      >
         <i slot="prefix" class="el-input__icon el-icon-lollipop"></i>
       </el-input>
     </div>
@@ -64,7 +68,7 @@
       <a class="other_login" @click="otherLogin()" v-if="other_state"
         >使用私钥登录</a
       >
-      <a class="other_login" @click="otherLogin()" v-else>使用助记词登录</a>
+      <a class="other_login" @click="otherLogin()" v-else>使用助忆词登录</a>
     </div>
   </div>
 </template>
