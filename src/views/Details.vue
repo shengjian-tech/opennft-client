@@ -525,7 +525,7 @@ export default {
                 this.$notify({
                   title: "查询成功",
                   dangerouslyUseHTMLString: true,
-                  message: `当前您的资产数量为<b style='padding-left:5px'>${
+                  message: `当前资产数量为<b style='padding-left:5px'>${
                     JSON.parse(result)[0]["0"]
                   }</b> ${
                     JSON.parse(result)[0]["0"] == 0
