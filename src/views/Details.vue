@@ -281,7 +281,8 @@ export default {
           type: "transaction",
           methodName: "safeTransferFrom",
           formValue: [
-            { value: "address", label: "接受方address" },
+            { value: "address", label: "接收方address" },
+            { value: "address_on", label: "确认接收方address" },
             { value: "token_id", label: "藏品ID" },
             { value: "num", label: "数量" },
           ],
@@ -379,8 +380,18 @@ export default {
     },
     // 转移NFT
     TransferNFTEvm(formName) {
-      this.fullscreenLoading = true;
       this.$refs[formName].validate((valid) => {
+        if (this.ruleForm.address !== this.ruleForm.address_on) {
+          this.$notify({
+            title: "转移失败",
+            dangerouslyUseHTMLString: true,
+            message: `请再次核对接收方address!`,
+            type: "error",
+            duration: 0,
+          });
+          return false;
+        }
+        this.fullscreenLoading = true;
         if (valid) {
           const node = "https://xuper.baidu.com/nodeapi";
           const chain = "xuper";
@@ -871,7 +882,7 @@ export default {
 <style scoped>
 .details {
   width: 400px;
-  min-height: 500px;
+  min-height: 585px;
   margin: auto;
 }
 .details .header {
