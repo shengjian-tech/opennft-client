@@ -433,6 +433,7 @@ export default {
                   )}`,
                 }).then((response) => {
                   console.log(response); //请求成功返回的数据
+                  this.fullscreenLoading = false;
                 });
               }
               const result = xsdk.postTransaction(demo.transaction, acc);
@@ -519,7 +520,7 @@ export default {
                 this.$notify({
                   title: "查询成功",
                   dangerouslyUseHTMLString: true,
-                  message: `当前资产数量为<b style='padding-left:5px'>${
+                  message: `当前藏品数量为<b style='padding-left:5px'>${
                     JSON.parse(result)[0]["0"]
                   }</b> ${
                     JSON.parse(result)[0]["0"] == 0
@@ -843,7 +844,7 @@ export default {
           var result1 =
             res1.preExecutionTransaction.response.responses[len1 - 1].body;
           var response1 = JSON.parse(Buffer.from(result1, "base64").toString());
-          // 该ID资产的交易保护时间
+          // 该ID藏品的交易保护时间
           var tokenOwnerExpireTiem = response1[0]["0"];
         }
         var time =
