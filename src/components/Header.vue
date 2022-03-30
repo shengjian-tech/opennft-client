@@ -2,11 +2,15 @@
   <div class="header">
     <el-row>
       <el-col :span="12" v-if="routeState">
-        <el-button
-          type="text"
-          style="float: left; font-size: 14px; color: #409eff"
-          >版本号：0.0.5</el-button
-        >
+         <el-popover
+          placement="bottom"
+          title="版本更新內容"
+          width="200"
+          trigger="click"
+          content="1.错误中文提示。2.细节优化。">
+          <el-button  slot="reference" type="text" style="float: left; font-size: 14px; color: #409eff">版本号：0.0.6</el-button>
+        </el-popover>
+        
       </el-col>
       <el-col :span="12" v-else>
         <div @click="getSetting" class="return">

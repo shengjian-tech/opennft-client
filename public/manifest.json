@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "MakerONE",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "MakerONE 创造我热爱的世界",
   "content_security_policy":"script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"icons":

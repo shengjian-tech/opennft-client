@@ -665,8 +665,8 @@ export default {
               if (txDetail && nftDetail) {
                 //判断是否是3D
                 if (nftDetail.link.match(/^(.*)(\.)(.{1,8})$/)[3].toUpperCase() =="ZIP") {
-                    nftDetail.link = `${nftDetail.link.substring(0,nftDetail.link.lastIndexOf("."))}_3D.gif`;
-                  }
+                    nftDetail.link = `${nftDetail.link.substring(0,nftDetail.link.lastIndexOf("."))}_3D/show.gif`;
+                }
                 this.txDetail = txDetail;
                 this.srcList = [];
                 this.nftDetail = nftDetail;
@@ -869,7 +869,7 @@ export default {
           this.$notify({
             title: "请求失败",
             dangerouslyUseHTMLString: true,
-            message: `用户在开放网络未实名认证，请认证后重试`,
+            message: `您在开放网络未实名认证，请认证后重试`,
             type: "error",
             duration: 0,
           });
@@ -879,7 +879,7 @@ export default {
           this.$notify({
             title: "请求失败",
             dangerouslyUseHTMLString: true,
-            message: `用户address下的指定藏品Id的资产余额不足`,
+            message: `您名下的藏品数量不足`,
             type: "error",
             duration: 0,
           });
@@ -894,6 +894,7 @@ export default {
             duration: 0,
           });
           this.fullscreenLoading = false;
+          break;
         case "NOT_ENOUGH_UTXO_ERROR":
           this.$notify({
             title: "请求失败",
@@ -903,6 +904,17 @@ export default {
             duration: 0,
           });
           this.fullscreenLoading = false;
+          break;
+        case "arg name to not found":
+          this.$notify({
+            title: "请求失败",
+            dangerouslyUseHTMLString: true,
+            message: `接收方address不存在!`,
+            type: "error",
+            duration: 0,
+          });
+          this.fullscreenLoading = false;
+          break;
         default:
           this.$notify({
             title: "请求失败",
