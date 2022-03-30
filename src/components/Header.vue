@@ -5,7 +5,7 @@
         <el-button
           type="text"
           style="float: left; font-size: 14px; color: #409eff"
-          >版本号：0.0.4</el-button
+          >版本号：0.0.5</el-button
         >
       </el-col>
       <el-col :span="12" v-else>

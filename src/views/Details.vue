@@ -35,11 +35,15 @@
           <div style="text-align: center">
             <el-button
               v-if="value == '转移藏品'"
-              style="width: 80%; background-color: #008bd7; border: none"
+              :disabled="show_btn_state"
+              style="width: 80%; border: none"
               type="primary"
+              :class="show_btn_state ? 'show_btn_stateClass' : ''"
               round
               @click="TransferNFTEvm('ruleForm')"
-              >执行</el-button
+              >{{
+                show_btn_state ? "转移成功!请勿重复转移" : "执行"
+              }}</el-button
             >
             <el-button
               v-else-if="value == '查询藏品数量'"
@@ -69,7 +73,7 @@
         </el-form-item>
       </el-form>
       <el-dialog
-        title="交易哈希"
+        title="转移成功!"
         :visible.sync="dialogVisible"
         width="80%"
         :close-on-click-modal="false"
@@ -77,6 +81,7 @@
       >
         <el-row :gutter="20">
           <el-col :span="18">
+            <div>建议截图保存交易哈希:</div>
             <div
               class="grid-content bg-purple"
               style="text-align: left; word-wrap: break-word"
@@ -305,6 +310,7 @@ export default {
           formValue: [{ value: "txId", label: "交易哈希" }],
         },
       ],
+      show_btn_state: false,
     };
   },
   components: { Header },
@@ -437,6 +443,7 @@ export default {
               if (xsdk.transactionIdToHex(demo.transaction.txid)) {
                 this.txId = xsdk.transactionIdToHex(demo.transaction.txid);
                 this.dialogVisible = true;
+                this.show_btn_state = true;
                 this.$axios({
                   method: "get",
                   url: `https://makerone.shengjian.net/nft/api/nft/userassets/synchronizedTransaction?txId=${xsdk.transactionIdToHex(
@@ -444,8 +451,8 @@ export default {
                   )}`,
                 }).then((response) => {
                   console.log(response); //请求成功返回的数据
-                  this.fullscreenLoading = false;
                 });
+                this.fullscreenLoading = false;
               }
               const result = xsdk.postTransaction(demo.transaction, acc);
             } catch (err) {
@@ -534,7 +541,8 @@ export default {
                   message: `当前藏品数量为<b style='padding-left:5px'>${
                     JSON.parse(result)[0]["0"]
                   }</b> ${
-                    JSON.parse(result)[0]["0"] == 0
+                    JSON.parse(result)[0]["0"] == 0 ||
+                    this.ruleForm.token_address !== acc.address
                       ? ""
                       : `<br/> 冷却期剩余<b style='padding-left:5px'>${tokenExpireTime}</b>`
                   }`,
@@ -918,5 +926,8 @@ export default {
 }
 .el-notification__content {
   word-break: break-all;
+}
+.show_btn_stateClass {
+  background-color: #ddd !important;
 }
 </style>
