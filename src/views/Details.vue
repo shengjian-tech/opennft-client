@@ -263,7 +263,7 @@ export default {
         methodName: "",
         formValue: [],
       },
-      ruleForm: {},
+      ruleForm: { num: "1" },
       value: this.$route.query.index,
       options: [
         {
@@ -332,6 +332,7 @@ export default {
       this.ruleForm = {
         token_address: JSON.parse(localStorage.getItem("acc")).address,
         token_id: this.$route.query.token_id,
+        num: "1",
       };
     }
     if (this.$route.query.tx_id) {
@@ -458,14 +459,7 @@ export default {
             } catch (err) {
               // err 是空 证明转移成功，不是 就是执行失败。
               if (err) {
-                this.fullscreenLoading = false;
-                this.$notify({
-                  title: "转移失败",
-                  dangerouslyUseHTMLString: true,
-                  message: `${err.error.message}`,
-                  type: "error",
-                  duration: 0,
-                });
+                this.errorMessage(err);
               } else {
                 this.fullscreenLoading = false;
                 this.$message.success("转移成功");
@@ -551,14 +545,7 @@ export default {
                 });
               }
             } catch (err) {
-              this.fullscreenLoading = false;
-              this.$notify({
-                title: "查询失败",
-                dangerouslyUseHTMLString: true,
-                message: `${err.error.message}`,
-                type: "error",
-                duration: 0,
-              });
+              this.errorMessage(err);
             }
           };
           queryNFTBalance(this.ruleForm.token_id);
@@ -673,8 +660,13 @@ export default {
                 name: dataJson.name,
                 hash: dataJson.hash,
               };
+
               // 前端展示数据
               if (txDetail && nftDetail) {
+                //判断是否是3D
+                if (nftDetail.link.match(/^(.*)(\.)(.{1,8})$/)[3].toUpperCase() =="ZIP") {
+                    nftDetail.link = `${nftDetail.link.substring(0,nftDetail.link.lastIndexOf("."))}_3D.gif`;
+                  }
                 this.txDetail = txDetail;
                 this.srcList = [];
                 this.nftDetail = nftDetail;
@@ -684,14 +676,7 @@ export default {
               }
               return txDetail, nftDetail;
             } catch (err) {
-              this.fullscreenLoading = false;
-              this.$notify({
-                title: "查询失败",
-                dangerouslyUseHTMLString: true,
-                message: `${err}`,
-                type: "error",
-                duration: 0,
-              });
+              this.errorMessage(err);
             }
           };
           GetTxDetail(this.ruleForm.txId);
@@ -772,14 +757,7 @@ export default {
               }
             } catch (err) {
               if (err) {
-                this.fullscreenLoading = false;
-                this.$notify({
-                  title: "查询失败",
-                  dangerouslyUseHTMLString: true,
-                  message: `${err.error.message}`,
-                  type: "error",
-                  duration: 0,
-                });
+                this.errorMessage(err);
               } else {
                 this.fullscreenLoading = false;
                 this.$message.success("执行成功");
@@ -882,6 +860,58 @@ export default {
           type: "error",
           duration: 0,
         });
+      }
+    },
+    errorMessage(err) {
+      console.log(err);
+      switch (err.error.message) {
+        case "identity check failed":
+          this.$notify({
+            title: "请求失败",
+            dangerouslyUseHTMLString: true,
+            message: `用户在开放网络未实名认证，请认证后重试`,
+            type: "error",
+            duration: 0,
+          });
+          this.fullscreenLoading = false;
+          break;
+        case "error 17 - Error 17: execution reverted: with reason 'ERC1155: insufficient balance for transfer'":
+          this.$notify({
+            title: "请求失败",
+            dangerouslyUseHTMLString: true,
+            message: `用户address下的指定藏品Id的资产余额不足`,
+            type: "error",
+            duration: 0,
+          });
+          this.fullscreenLoading = false;
+          break;
+        case "error 17 - Error 17: execution reverted: with reason 'ERC1155: token protect time is unexpired'":
+          this.$notify({
+            title: "请求失败",
+            dangerouslyUseHTMLString: true,
+            message: `服务端显示错误，实际链上交易保护期未到期!`,
+            type: "error",
+            duration: 0,
+          });
+          this.fullscreenLoading = false;
+        case "NOT_ENOUGH_UTXO_ERROR":
+          this.$notify({
+            title: "请求失败",
+            dangerouslyUseHTMLString: true,
+            message: `账户余额不足!`,
+            type: "error",
+            duration: 0,
+          });
+          this.fullscreenLoading = false;
+        default:
+          this.$notify({
+            title: "请求失败",
+            dangerouslyUseHTMLString: true,
+            message: `${err.error.message}`,
+            type: "error",
+            duration: 0,
+          });
+          this.fullscreenLoading = false;
       }
     },
   },
