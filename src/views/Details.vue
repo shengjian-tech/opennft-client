@@ -32,7 +32,7 @@
         </el-form-item>
         <!-- 表单提交方法判断 -->
         <el-form-item>
-          <a v-if="value == '转移藏品'" class="alertShowPrimary">{{`转移成功后，接收方的藏品${ruleForm.token_id?`:${ruleForm.token_id}`:''} 会全部重新进入冷却期!`}}</a>
+          <a v-if="value == '转移藏品'" class="alertShowPrimary">{{`转移成功后，接收方的藏品ID[${ruleForm.token_id?`${ruleForm.token_id}`:''}] 会全部重新进入冷却期!`}}</a>
           <div style="text-align: center">
             <el-button
               v-if="value == '转移藏品'"
