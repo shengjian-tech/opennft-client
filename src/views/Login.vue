@@ -11,14 +11,14 @@
     </div>
     <div class="write" v-else>
       <el-row :gutter="10">
-        <el-col :span="12">
+        <el-col :span="10">
           <div class="grid-content bg-purple">
             <el-input placeholder="本地私钥路径" v-model="private_key">
               <i slot="prefix" class="el-input__icon el-icon-folder"></i>
             </el-input>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="10">
           <div class="grid-content bg-purple-light">
             <el-button
               style="background-color: #008bd7; border: none"
@@ -35,13 +35,31 @@
             />
           </div>
         </el-col>
+        <el-col :span="4">
+          <p
+        style="
+          color: gray;
+          font-size: 14px;
+          text-align: left;
+          margin-bottom: 5px;
+          margin-top:10px;
+          display:flex;
+          flex-direction: row;
+          justify-content: flex-end;
+        "
+      >
+        <a href="https://xuper.baidu.com/n/console#/xuperos/info" class="other_login">下载私钥</a>
+      </p>
+        </el-col>
       </el-row>
+      
       <p
         style="
           color: gray;
           font-size: 14px;
           text-align: left;
           margin-bottom: 5px;
+          margin-top:10px;
         "
       >
         <i class="el-icon-warning-outline"></i
@@ -146,7 +164,7 @@ export default {
         this.$notify({
           title: "登录失败",
           dangerouslyUseHTMLString: true,
-          message: `${err.message}`,
+          message: `${err.message.indexOf('Unexpected token')!=-1?'您的安全码和私钥不匹配!':err.message}`,
           type: "error",
           duration: 0,
         });

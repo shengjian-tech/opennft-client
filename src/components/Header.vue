@@ -7,8 +7,8 @@
           title="版本更新內容"
           width="200"
           trigger="click"
-          content="1.错误中文提示。2.细节优化。">
-          <el-button  slot="reference" type="text" style="float: left; font-size: 14px; color: #409eff">版本号：0.0.6</el-button>
+          content="1.增加下载私钥链接地址。2.细节优化。">
+          <el-button  slot="reference" type="text" style="float: left; font-size: 14px; color: #409eff">版本号：0.0.7</el-button>
         </el-popover>
         
       </el-col>
