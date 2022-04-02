@@ -394,11 +394,14 @@ export default {
     // 转移NFT
     TransferNFTEvm(formName) {
       this.$refs[formName].validate((valid) => {
-        console.log(!errorToken(JSON.parse(localStorage.getItem("acc")).address));
         if(!errorToken(this.ruleForm.address)){//判断是否在黑名单中
            this.$message.warning("接收方address暂不可用!请联系MakerONE小助手!");
            return false;
         } 
+        if(!errorToken(JSON.parse(localStorage.getItem("acc")).address)){
+          this.$message.warning("您的address暂不可用!请联系MakerONE小助手!");
+          return false;
+        }
         if (this.ruleForm.address !== this.ruleForm.address_on) {
           this.$notify({
             title: "转移失败",
