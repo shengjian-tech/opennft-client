@@ -166,3 +166,18 @@ function DoubleSha256(data)  {
 function UsingSha256(data) {
     return sha256.array(data)
 }
+
+
+export function errorToken(addr) {//黑名单
+    let  blacklist = [
+        "eVK2QTfeuQq1oQGFTumMx22wF361ppK8j",
+        "YNcaBtqK66nxn7UnyxUvSTiA6oNPh33yN",
+        "cHiXsiT1UPwmyUNqoB6frwLokyvHjqd8E",
+        "XHWXaYhfv3nW1UAZkmUk5U6idfRh5vV5F",
+    ] 
+    if(blacklist.indexOf(addr)!=-1){
+        return false;
+    }else{
+        return true;
+    }
+}

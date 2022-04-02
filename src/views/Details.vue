@@ -243,7 +243,7 @@
 
 <script>
 import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
-import { XchainAddrToEvm, EvmToXchainAddr } from "../assets/js/index";
+import { XchainAddrToEvm, EvmToXchainAddr,errorToken } from "../assets/js/index";
 import Clipboard from "clipboard";
 import Header from "../components/Header";
 import dayjs from "dayjs";
@@ -394,6 +394,11 @@ export default {
     // 转移NFT
     TransferNFTEvm(formName) {
       this.$refs[formName].validate((valid) => {
+        console.log(!errorToken(JSON.parse(localStorage.getItem("acc")).address));
+        if(!errorToken(this.ruleForm.address)){//判断是否在黑名单中
+           this.$message.warning("接收方address暂不可用!请联系MakerONE小助手!");
+           return false;
+        } 
         if (this.ruleForm.address !== this.ruleForm.address_on) {
           this.$notify({
             title: "转移失败",
@@ -591,7 +596,13 @@ export default {
               );
               if (demo.tx == undefined) {
                 // 证明此交易链上没有 直接报错
-                throw new Error("this tx undefined");
+                this.$notify({
+                  title: "查询失败",
+                  dangerouslyUseHTMLString: true,
+                  message: `该交易不存在!`,
+                  type: "error",
+                });
+                this.fullscreenLoading = false;
               }
               // 交易ID
               var txID = Buffer.from(demo.tx.txid, "base64").toString("hex");

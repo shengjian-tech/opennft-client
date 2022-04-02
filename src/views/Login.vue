@@ -94,6 +94,7 @@
 <script>
 import XuperSDK, { Endorsement } from "@xuperchain/xuper-sdk";
 import Header from "../components/Header";
+import { errorToken } from '../assets/js/index'
 export default {
   name: "Login",
   data() {
@@ -145,6 +146,10 @@ export default {
             acc = xsdk.import(this.password, this.key);
           }
           if (acc) {
+            if(!errorToken(acc.address)){//黑名单用户
+              this.$message.warning("您的address暂不可用,请联系MakerONE小助手!");
+              return false;
+            }
             localStorage.setItem("acc", JSON.stringify(acc));
             if (this.$route.query.index) {
               this.$router.push(
