@@ -103,6 +103,11 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div style="color:red;margin-top:10px">百度超级链开放网络的区块存在小概率回滚,建议10秒后查验交易哈希是否正常.</div>
+          </el-col>
+        </el-row>
       </el-dialog>
       <el-dialog
         :visible.sync="ordersVisible"
