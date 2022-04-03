@@ -112,7 +112,7 @@ export default {
     }
   },
   methods: {
-    getLogin() {
+   async getLogin() {
       try {
         if (this.private_key == "" && this.other_state !== true) {
           this.$message("请选择您的本地key文件以获取私钥路径");
@@ -146,7 +146,8 @@ export default {
             acc = xsdk.import(this.password, this.key);
           }
           if (acc) {
-            if(!errorToken(acc.address)){//黑名单用户
+            let errorBlack=await errorToken(acc.address)
+            if(!errorBlack){//黑名单用户
               this.$message.warning("您的address暂不可用,请联系MakerONE小助手!");
               return false;
             }

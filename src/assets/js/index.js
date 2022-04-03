@@ -1,5 +1,6 @@
 import base58 from 'bs58';
 import {sha256} from 'js-sha256';
+import axios from 'axios';
 export function XchainAddrToEvm(addr) {
     var result = ''
     try {
@@ -168,13 +169,40 @@ function UsingSha256(data) {
 }
 
 
-export function errorToken(addr) {//黑名单
-    let  blacklist = [
-        "eVK2QTfeuQq1oQGFTumMx22wF361ppK8j",
-        "YNcaBtqK66nxn7UnyxUvSTiA6oNPh33yN",
-        "cHiXsiT1UPwmyUNqoB6frwLokyvHjqd8E",
-        "XHWXaYhfv3nW1UAZkmUk5U6idfRh5vV5F",
-    ] 
+async function getBlackList(){
+    let blacklist=[];
+     await  axios({
+        method: "get",
+        url: `https://makerone.shengjian.net/nft/api/nft/v2/userinfo/blackUser`,
+    }).then((response) => {
+        console.log(response);
+        if(response.data.status=='success'&&response.data.statusCode==200){
+            response.data.result.map((res)=>{
+                blacklist.push(res.address);
+            });
+        }else{
+            blacklist= [
+                "eVK2QTfeuQq1oQGFTumMx22wF361ppK8j",
+                "YNcaBtqK66nxn7UnyxUvSTiA6oNPh33yN",
+                "cHiXsiT1UPwmyUNqoB6frwLokyvHjqd8E",
+                "XHWXaYhfv3nW1UAZkmUk5U6idfRh5vV5F",
+            ] 
+        }
+    }).catch(function (error) {
+        blacklist= [
+            "eVK2QTfeuQq1oQGFTumMx22wF361ppK8j",
+            "YNcaBtqK66nxn7UnyxUvSTiA6oNPh33yN",
+            "cHiXsiT1UPwmyUNqoB6frwLokyvHjqd8E",
+            "XHWXaYhfv3nW1UAZkmUk5U6idfRh5vV5F",
+        ] 
+    });
+    console.log(blacklist);
+    return blacklist;
+}
+
+
+export async  function errorToken(addr) {//黑名单
+    let blacklist= await  getBlackList();
     if(blacklist.indexOf(addr)!=-1){
         return false;
     }else{

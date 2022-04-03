@@ -392,13 +392,15 @@ export default {
       });
     },
     // 转移NFT
-    TransferNFTEvm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if(!errorToken(this.ruleForm.address)){//判断是否在黑名单中
+   TransferNFTEvm(formName) {
+      this.$refs[formName].validate(async (valid) => {
+        let errorBlack_1= await errorToken(this.ruleForm.address)
+        let errorBlack_2= await errorToken(JSON.parse(localStorage.getItem("acc")).address)
+        if(!errorBlack_1){//判断是否在黑名单中
            this.$message.warning("接收方address暂不可用!请联系MakerONE小助手!");
            return false;
         } 
-        if(!errorToken(JSON.parse(localStorage.getItem("acc")).address)){
+        if(!errorBlack_2){
           this.$message.warning("您的address暂不可用!请联系MakerONE小助手!");
           return false;
         }
