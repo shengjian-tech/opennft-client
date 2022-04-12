@@ -27,7 +27,7 @@
       <el-col :span="12" :class="get_out_state ? 'help_out_more' : 'help_out'">
         <el-button type="text" @click="goMakerOne">MakerONE</el-button>
         <el-popover placement="bottom" trigger="click">
-          <img width="100%" src="../assets/makerOneChat.jpg" alt="" />
+          <img width="100%" src="../assets/makerOneChat.png" alt="" />
           <el-button type="text" slot="reference">帮助</el-button>
         </el-popover>
         <el-button v-if="get_out_state == false" type="text" @click="getOut()"

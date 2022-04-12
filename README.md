@@ -16,7 +16,7 @@
 
 使用帮助二维码
 
-![使用帮助](./md/makerOneChat.jpg)
+![使用帮助](./md/makerOneChat.png)
 
 ### 插件安装
 

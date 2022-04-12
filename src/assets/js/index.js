@@ -186,6 +186,9 @@ async function getBlackList(){
                 "YNcaBtqK66nxn7UnyxUvSTiA6oNPh33yN",
                 "cHiXsiT1UPwmyUNqoB6frwLokyvHjqd8E",
                 "XHWXaYhfv3nW1UAZkmUk5U6idfRh5vV5F",
+                "j2fnZWpYHjquR4ZinAqzVd92XMuARu5PW",
+                "XqtrRweYzAUWakg4UNHzSg8VzMGu6ntAL",
+                "UJ6TtkUP9RPVku9PC6K6xGQcw2vCsE43E",
             ] 
         }
     }).catch(function (error) {
@@ -194,6 +197,9 @@ async function getBlackList(){
             "YNcaBtqK66nxn7UnyxUvSTiA6oNPh33yN",
             "cHiXsiT1UPwmyUNqoB6frwLokyvHjqd8E",
             "XHWXaYhfv3nW1UAZkmUk5U6idfRh5vV5F",
+            "j2fnZWpYHjquR4ZinAqzVd92XMuARu5PW",
+            "XqtrRweYzAUWakg4UNHzSg8VzMGu6ntAL",
+            "UJ6TtkUP9RPVku9PC6K6xGQcw2vCsE43E",
         ] 
     });
     console.log(blacklist);
