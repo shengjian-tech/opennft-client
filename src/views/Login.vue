@@ -147,7 +147,7 @@ export default {
           }
           if (acc) {
             let errorBlack=await errorToken(acc.address)
-            if(!errorBlack){//黑名单用户
+            if(errorBlack){//黑名单用户
               this.$message.warning("您的address暂不可用,请联系MakerONE小助手!");
               return false;
             }

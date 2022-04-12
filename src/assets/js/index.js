@@ -169,17 +169,14 @@ function UsingSha256(data) {
 }
 
 
-async function getBlackList(){
+async function getBlackList(address){
     let blacklist=[];
      await  axios({
         method: "get",
-        url: `https://makerone.shengjian.net/nft/api/nft/v2/userinfo/blackUser`,
+        url: `https://makerone.shengjian.net/nft/api/nft/v2/userinfo/blackUser?address=${address}`,
     }).then((response) => {
-        console.log(response);
         if(response.data.status=='success'&&response.data.statusCode==200){
-            response.data.result.map((res)=>{
-                blacklist.push(res.address);
-            });
+            blacklist=response.data.result;
         }else{
             blacklist= [
                 "eVK2QTfeuQq1oQGFTumMx22wF361ppK8j",
@@ -202,16 +199,19 @@ async function getBlackList(){
             "UJ6TtkUP9RPVku9PC6K6xGQcw2vCsE43E",
         ] 
     });
-    console.log(blacklist);
     return blacklist;
 }
 
 
 export async  function errorToken(addr) {//黑名单
-    let blacklist= await  getBlackList();
-    if(blacklist.indexOf(addr)!=-1){
-        return false;
-    }else{
-        return true;
+    let blacklist= await  getBlackList(addr);
+    if(Array.isArray(blacklist)){//是数组，说明接口报错，引用了本地黑名单。
+        if(blacklist.indexOf(addr)!=-1){
+            return true;
+        }else{
+            return false;
+        }
+    }else {
+        return blacklist
     }
 }
